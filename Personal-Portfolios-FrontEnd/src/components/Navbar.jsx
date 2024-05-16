@@ -1,5 +1,8 @@
+import { NavLink } from "react-router-dom";
+
 const Navbar = () => {
     const linkList = <>
+        <li><NavLink to="/">Home</NavLink></li>
         <li><a>Item 1</a></li>
         <li>
             <details>
@@ -11,6 +14,7 @@ const Navbar = () => {
             </details>
         </li>
         <li><a>Item 3</a></li>
+        <li><NavLink to="/about">About</NavLink></li>
     </>;
     return (
         <div className="navbar bg-base-100">
