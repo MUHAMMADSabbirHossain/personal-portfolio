@@ -46,7 +46,7 @@ const Resume = () => {
 
     return (
         <div className='mx-10'>
-            <h1 className="text-5xl text-center font-bold">Resume...</h1>
+            <h1 className="text-5xl text-center font-bold p-5">Resume...</h1>
 
             <div className="flex flex-col w-full border-opacity-50">
                 <div className="grid card bg-base-300 rounded-box place-items-center">
