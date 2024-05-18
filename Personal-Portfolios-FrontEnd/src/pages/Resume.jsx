@@ -2,6 +2,7 @@ import { useRef, useState } from 'react';
 import { useReactToPrint } from 'react-to-print';
 import { FaGithub, FaMapLocationDot, FaLinkedin, FaSquarePhone } from "react-icons/fa6";
 import { MdEmail } from "react-icons/md";
+import { FaFileDownload } from "react-icons/fa";
 
 const Resume = () => {
     const componentRef = useRef();
@@ -206,7 +207,10 @@ const Resume = () => {
                         <summary>{skills}</summary>
                     </div>
                 </div >
-                <button className="btn" onClick={handlePrint}>Download</button>
+                <button className="btn" onClick={handlePrint}>
+                    Download PDF
+                    <FaFileDownload />
+                </button>
             </section >
         </div >
     );
