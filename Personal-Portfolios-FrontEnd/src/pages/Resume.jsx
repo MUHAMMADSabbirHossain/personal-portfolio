@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
 import { useReactToPrint } from 'react-to-print';
-import { FaBeer } from 'react-icons/fa';
+import { FaGithub, FaMapLocationDot, FaLinkedin, FaSquarePhone } from "react-icons/fa6";
+import { MdEmail } from "react-icons/md";
 
 const Resume = () => {
     const componentRef = useRef();
@@ -126,16 +127,44 @@ const Resume = () => {
                 <div ref={componentRef} >
                     {/* basic info */}
                     <div>
-                        <h2 className='text-center font-bold bg-blue-500'>{name}</h2>
+                        <h2 className='text-center font-bold'>{name}</h2>
                         <div className='flex justify-evenly'>
-                            <p className=''>{email}</p>
                             {
-                                location && <p>{location}
-                                </p>
+                                location &&
+                                <span className='flex items-center'>
+                                    <FaMapLocationDot />
+                                    <address className='mx-1'>{location}</address>
+                                </span>
                             }
-                            <p>{phone}</p>
-                            <p>{linkedin}</p>
-                            <p>{github}</p>
+                            {
+                                email &&
+                                <span className='flex items-center'>
+                                    <MdEmail />
+                                    <a href={`mailto:${email}`} className='mx-1'>{email}</a>
+                                </span>
+                            }
+                            {
+                                phone &&
+                                <span className='flex items-center'>
+                                    <FaSquarePhone />
+                                    <a href={`tel:${phone}`} className='mx-1'>{phone}</a>
+                                </span>
+
+                            }
+                            {
+                                linkedin &&
+                                <span className='flex items-center'>
+                                    <FaLinkedin />
+                                    <a href={`${linkedin}`} target='_blank' className='mx-1'>{linkedin}</a>
+                                </span>
+                            }
+                            {
+                                github &&
+                                <span className='flex items-center'>
+                                    <FaGithub />
+                                    <a href={`${github}`} target='_blank' className='mx-1'>{github}</a>
+                                </span>
+                            }
                         </div>
                     </div>
 
@@ -176,9 +205,9 @@ const Resume = () => {
                         <hr />
                         <summary>{skills}</summary>
                     </div>
-                </div>
+                </div >
                 <button className="btn" onClick={handlePrint}>Download</button>
-            </section>
+            </section >
         </div >
     );
 };
