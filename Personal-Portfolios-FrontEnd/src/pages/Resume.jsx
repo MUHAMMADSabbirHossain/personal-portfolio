@@ -1,8 +1,10 @@
 import { useRef, useState } from 'react';
 import { useReactToPrint } from 'react-to-print';
-import { FaGithub, FaMapLocationDot, FaLinkedin, FaSquarePhone } from "react-icons/fa6";
-import { MdEmail } from "react-icons/md";
-import { FaFileDownload } from "react-icons/fa";
+import { FaGithub, FaMapLocationDot, FaLinkedin, FaSquarePhone, FaUserGraduate } from "react-icons/fa6";
+import { MdEmail, MdSummarize } from "react-icons/md";
+import { FaFileDownload, FaProjectDiagram } from "react-icons/fa";
+import { GiSkills } from "react-icons/gi";
+import { GrUserExpert } from "react-icons/gr";
 
 const Resume = () => {
     const componentRef = useRef();
@@ -171,14 +173,18 @@ const Resume = () => {
 
                     {/* summary */}
                     <div>
-                        <h2 className="uppercase">summary</h2>
+                        < div className='flex items-center'>
+                            <h2 className="uppercase mx-1">summary</h2><MdSummarize />
+                        </div>
                         <summary>{summary}</summary>
                         <hr />
                     </div>
 
                     {/* experience */}
                     <div>
-                        <h2 className="uppercase">expreience</h2>
+                        <div className='flex items-center'>
+                            <h2 className="uppercase mx-1">expreience</h2><GrUserExpert />
+                        </div>
                         <hr />
                         <p>{postTitle}</p>
                         <p>{compayName}</p>
@@ -187,7 +193,9 @@ const Resume = () => {
 
                     {/* projects */}
                     <div>
-                        <h2 className="uppercase">projects</h2>
+                        <div className='flex items-center'>
+                            <h2 className="uppercase mx-1">projects</h2><FaProjectDiagram />
+                        </div>
                         <hr />
                         <p>{projectTitle}</p>
                         <p>{projectDuration}</p>
@@ -196,13 +204,19 @@ const Resume = () => {
                     </div>
                     {/* education */}
                     <div>
-                        <h2 className="uppercase">education</h2>
+                        <div className='flex items-center'>
+                            <h2 className="uppercase mx-1">education</h2>
+                            <FaUserGraduate />
+                        </div>
                         <hr />
                         <summary>{education}</summary>
                     </div>
                     {/* skills */}
                     <div>
-                        <h2 className="uppercase">skills</h2>
+                        <div className='flex items-center'>
+                            <h2 className="uppercase mx-1">skills</h2>
+                            <GiSkills />
+                        </div>
                         <hr />
                         <summary>{skills}</summary>
                     </div>
