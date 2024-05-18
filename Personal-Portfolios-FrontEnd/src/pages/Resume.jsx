@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react';
 import { useReactToPrint } from 'react-to-print';
+import { FaBeer } from 'react-icons/fa';
 
 const Resume = () => {
     const componentRef = useRef();
@@ -10,6 +11,7 @@ const Resume = () => {
     const [resumeInfo, setResumeInfo] = useState({
         name: "",
         // age: "",
+        location: "",
         email: "",
         phone: "",
         linkedin: "",
@@ -127,7 +129,10 @@ const Resume = () => {
                         <h2 className='text-center font-bold bg-blue-500'>{name}</h2>
                         <div className='flex justify-evenly'>
                             <p className=''>{email}</p>
-                            <p>{location}</p>
+                            {
+                                location && <p>{location}
+                                </p>
+                            }
                             <p>{phone}</p>
                             <p>{linkedin}</p>
                             <p>{github}</p>
