@@ -1,9 +1,10 @@
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 const Navbar = () => {
     const linkList = <>
         <li><NavLink to="/">Home</NavLink></li>
         <li><NavLink to="/resume">Resume</NavLink></li>
+        <li><NavLink to="/components-ui">ComponentsUI</NavLink></li>
         <li><NavLink to="/about">About</NavLink></li>
         {/* <li><a>Item 1</a></li>
         <li>
@@ -37,7 +38,7 @@ const Navbar = () => {
                         {linkList}
                     </ul>
                 </div>
-                <a className="btn btn-ghost text-xl">Micro_Services</a>
+                <Link to="/" className="btn btn-ghost text-xl">Micro_Services</Link>
             </div>
             <div className="navbar-center hidden lg:flex">
                 <ul className="menu menu-horizontal px-1">
