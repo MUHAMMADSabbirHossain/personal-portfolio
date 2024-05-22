@@ -3,8 +3,10 @@ import React from 'react';
 const ComponentsDoc = () => {
     return (
         <div>
-            <h1 className='text-4xl font-bold my-2'>Components UI - Tailwind CSS component library</h1>
-            <p className='text-xl'>Components UI is an open-source set of UI components and elements built with the world's fastest growing framework - Tailwind CSS.</p>
+            <div>
+                <h1 className='text-4xl font-bold my-2'>Components UI - Tailwind CSS component library</h1>
+                <p className='text-xl'>Components UI is an open-source set of UI components and elements built with the world's fastest growing framework - Tailwind CSS.</p>
+            </div>
 
             <div>
                 <h2 className='text-2xl font-bold my-2'>What's ComponentsUI?</h2>
