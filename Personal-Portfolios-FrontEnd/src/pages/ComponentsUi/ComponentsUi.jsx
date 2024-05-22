@@ -13,8 +13,6 @@ const ComponentsUi = () => {
             </section>
 
             <section className='col-span-3 border'>
-                {/* <Button></Button> */}
-                this is landing page of ComponentsUI
                 <Outlet></Outlet>
             </section>
 
