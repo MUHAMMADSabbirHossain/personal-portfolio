@@ -8,6 +8,7 @@ const ComponentsUi = () => {
                 <nav className='flex flex-col'>
                     <NavLink to="/components-ui/doc">Documentaion</NavLink>
                     <NavLink to="/components-ui/button">Button</NavLink>
+                    <NavLink to="/components-ui/table">Table</NavLink>
                     <NavLink to="/components-ui/navbar">Navbar</NavLink>
                 </nav>
             </section>

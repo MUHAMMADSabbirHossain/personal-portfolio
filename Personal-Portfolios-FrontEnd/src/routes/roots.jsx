@@ -7,6 +7,7 @@ import ComponentsUi from "../pages/ComponentsUi/ComponentsUi";
 import ComponentsDoc from "../pages/ComponentsUi/ComponentsDoc/ComponentsDoc";
 import Button from "../pages/ComponentsUi/ComponentsButton/ComponentsButton";
 import ComponentsNavbar from "../pages/ComponentsUi/ComponentsNavbar/ComponentsNavbar";
+import ComponentsTable from "../pages/ComponentsUi/ComponentsTable/ComponentsTable";
 
 const router = createBrowserRouter([
     {
@@ -32,6 +33,10 @@ const router = createBrowserRouter([
                     {
                         path: "/components-ui/button",
                         element: <Button></Button>
+                    },
+                    {
+                        path: "/components-ui/table",
+                        element: <ComponentsTable></ComponentsTable>
                     },
                     {
                         path: "/components-ui/navbar",
