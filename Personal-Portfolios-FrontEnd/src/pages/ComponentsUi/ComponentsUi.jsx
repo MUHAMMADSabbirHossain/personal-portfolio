@@ -13,7 +13,7 @@ const ComponentsUi = () => {
                 </nav>
             </section>
 
-            <section className='col-span-3 border'>
+            <section className='col-span-3'>
                 <Outlet></Outlet>
             </section>
 
