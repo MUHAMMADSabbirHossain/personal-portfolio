@@ -10,6 +10,8 @@ import ComponentsNavbar from "../pages/ComponentsUi/ComponentsNavbar/ComponentsN
 import ComponentsTable from "../pages/ComponentsUi/ComponentsTable/ComponentsTable";
 import Login from "../pages/Login/Login";
 import Register from "../pages/Register/Register";
+import DashBoard from "../pages/DashBoard/DashBoard";
+import PrivateRoute from "./PrivateRoute";
 
 const router = createBrowserRouter([
     {
@@ -45,6 +47,10 @@ const router = createBrowserRouter([
                         element: <ComponentsNavbar></ComponentsNavbar>
                     },
                 ]
+            },
+            {
+                path: "/dashboard",
+                element: <PrivateRoute><DashBoard></DashBoard></PrivateRoute>
             },
             {
                 path: "/about",
