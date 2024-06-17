@@ -12,6 +12,8 @@ import Login from "../pages/Login/Login";
 import Register from "../pages/Register/Register";
 import DashBoard from "../pages/DashBoard/DashBoard";
 import PrivateRoute from "./PrivateRoute";
+import Volunteering from "../pages/Volunteering/Volunteering";
+import Donation from "../pages/Donation/Donation";
 
 const router = createBrowserRouter([
     {
@@ -47,6 +49,14 @@ const router = createBrowserRouter([
                         element: <ComponentsNavbar></ComponentsNavbar>
                     },
                 ]
+            },
+            {
+                path: "/volunteering",
+                element: <Volunteering></Volunteering>
+            },
+            {
+                path: "/donation",
+                element: <Donation></Donation>
             },
             {
                 path: "/dashboard",
