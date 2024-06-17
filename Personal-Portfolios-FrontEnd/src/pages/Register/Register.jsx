@@ -1,10 +1,16 @@
 import React, { useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../providers/AuthProvider';
+import { FcGoogle } from "react-icons/fc";
 
 const Register = () => {
 
-    const { createEmailUser } = useContext(AuthContext);
+    const location = useLocation();
+    const navigate = useNavigate();
+
+    const { createEmailUser, googleLogin } = useContext(AuthContext);
+
+    console.log(location);
 
     const handleRegister = (event) => {
         event.preventDefault();
@@ -20,8 +26,26 @@ const Register = () => {
         createEmailUser(email, password)
             .then(result => {
                 console.log(result.user);
+                navigate(location?.state ?
+                    location.state :
+                    "/");
             })
             .catch(error => {
+                console.error(error.message);
+            })
+    }
+
+    // google login in
+    const handleGoogleLogin = () => {
+        googleLogin()
+            .then((result) => {
+                console.log(result.user);
+                navigate(location?.state ?
+                    location.state :
+                    "/"
+                );
+            })
+            .catch((error) => {
                 console.error(error.message);
             })
     }
@@ -56,9 +80,16 @@ const Register = () => {
                     </form>
 
                     <p className=' text-center my-2'>Already have any Account? <Link to="/login"><span className='text-blue-500 font-bold'>Login Here</span></Link>.</p>
+
+                    <div className="divider">OR</div>
+
+                    <div className="form-control my-6 mx-8">
+                        <button className="btn btn-primary" onClick={handleGoogleLogin}><FcGoogle className='text-3xl'></FcGoogle>Register in with Google</button>
+                    </div>
+
                 </div>
             </div>
-        </div>
+        </div >
     );
 };
 
