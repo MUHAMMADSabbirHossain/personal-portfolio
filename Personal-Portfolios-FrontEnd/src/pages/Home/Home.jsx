@@ -1,4 +1,4 @@
-import landingBgImg from "../assets/wavy-black-white-background.jpg";
+import landingBgImg from "../../assets/wavy-black-white-background.jpg";
 
 const Home = () => {
     return (
