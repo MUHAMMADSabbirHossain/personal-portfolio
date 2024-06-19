@@ -14,6 +14,15 @@ import DashBoard from "../pages/DashBoard/DashBoard";
 import PrivateRoute from "./PrivateRoute";
 import Volunteering from "../pages/Volunteering/Volunteering";
 import Donation from "../pages/Donation/Donation";
+import DashboardUserHome from "../pages/DashBoard/DashboardUserHome/DashboardUserHome";
+import DashboardAdminHome from "../pages/DashBoard/DashboardAdminHome/DashboardAdminHome";
+import AddVolunteering from "../pages/DashBoard/AddVolunteering/AddVolunteering";
+import AddDonation from "../pages/DashBoard/AddDonation.jsx/AddDonation";
+import UpdateVolunteering from "../pages/DashBoard/UpdateVolunteering/UpdateVolunteering";
+import UpdateDonation from "../pages/DashBoard/UpdateDonation/UpdateDonation";
+import ManageDonation from "../pages/DashBoard/ManageDonation/ManageDonation";
+import ManageVolunteering from "../pages/DashBoard/ManageVolunteering/ManageVolunteering";
+import AllUsers from "../pages/DashBoard/AllUsers/AllUsers";
 
 const router = createBrowserRouter([
     {
@@ -60,7 +69,52 @@ const router = createBrowserRouter([
             },
             {
                 path: "/dashboard",
-                element: <PrivateRoute><DashBoard></DashBoard></PrivateRoute>
+                element: <PrivateRoute><DashBoard></DashBoard></PrivateRoute>,
+                children: [
+                    /* user dashboard */
+                    {
+                        path: "/dashboard/userHome",
+                        element: <DashboardUserHome></DashboardUserHome>
+                    },
+
+                    /* admin dashboard */
+                    {
+                        path: "/dashboard/adminHome",
+                        element: <DashboardAdminHome></DashboardAdminHome>
+                    },
+                    {
+                        path: "/dashboard/manageVolunteering",
+                        element: <ManageVolunteering></ManageVolunteering>,
+                        children: []
+                    },
+                    {
+                        path: "/dashboard/manageVolunteering/addVolunteering",
+                        element: <AddVolunteering></AddVolunteering>
+                    },
+                    {
+                        path: "/dashboard/manageVolunteering/updateVolunteering/:id",
+                        element: <UpdateVolunteering></UpdateVolunteering>
+                    },
+                    {
+                        path: "/dashboard/manageDonation",
+                        element: <ManageDonation></ManageDonation>,
+                        children: []
+
+                    },
+                    {
+                        path: "/dashboard/manageDonation/addDonation",
+                        element: <AddDonation></AddDonation>
+                    },
+                    {
+                        path: "/dashboard/manageDonation/updateDonation/:id",
+                        element: <UpdateDonation></UpdateDonation>
+                    },
+                    {
+                        path: "/dashboard/allUsers",
+                        element: <AllUsers></AllUsers>
+                    }
+
+                ]
             },
             {
                 path: "/about",
