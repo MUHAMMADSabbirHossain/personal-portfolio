@@ -26,6 +26,21 @@ async function run() {
         // Connect the client to the server	(optional starting in v4.7)
         // await client.connect();
 
+        /* all collections */
+        const database = client.db("personalPortfoliosDb");
+        const donationCollection = database.collection("donations");
+
+        /* donation */
+        app.post("/donation", async (req, res) => {
+            const donationItem = req.body;
+            // console.log("donationItem: ", donationItem);
+
+            const result = await donationCollection.insertOne(donationItem);
+            // console.log(result);
+
+            res.send(result);
+        })
+
         // Send a ping to confirm a successful connection
         // await client.db("admin").command({ ping: 1 });
         // console.log("Pinged your deployment. You successfully connected to MongoDB!");
