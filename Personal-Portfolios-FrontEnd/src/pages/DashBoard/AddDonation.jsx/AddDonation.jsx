@@ -1,4 +1,5 @@
 import React from 'react';
+import useAxiosPublic from '../../../hooks/useAxiosPublic';
 
 const AddDonation = () => {
 
@@ -6,6 +7,8 @@ const AddDonation = () => {
         event.preventDefault();
         console.log(event.target);
         console.log(event.target.title.value);
+
+        const axiosPublic = useAxiosPublic();
 
         const form = new FormData(event.currentTarget);
         const title = form.get("title");
@@ -22,30 +25,35 @@ const AddDonation = () => {
             details
         }
 
-        fetch(`http://localhost:5000/donation`, {
-            method: "POST",
-            headers: {
-                'content-type': 'application/json'
-            },
-            body: JSON.stringify(donationItem)
-        })
-            .then(response => {
-                // Check if the request was successful
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                // Parse the response as JSON
-                return response.json();
-            })
-            .then(data => {
-                // Handle the JSON data
-                console.log(data);
-            })
-            .catch(error => {
-                console.error(error);
-            })
+        // fetch(`http://localhost:5000/donation`, {
+        //     method: "POST",
+        //     headers: {
+        //         'content-type': 'application/json'
+        //     },
+        //     body: JSON.stringify(donationItem)
+        // })
+        //     .then(response => {
+        //         // Check if the request was successful
+        //         if (!response.ok) {
+        //             throw new Error('Network response was not ok');
+        //         }
+        //         // Parse the response as JSON
+        //         return response.json();
+        //     })
+        //     .then(data => {
+        //         // Handle the JSON data
+        //         console.log(data);
+        //     })
+        //     .catch(error => {
+        //         console.error(error);
+        //     })
 
+        const res = await axiosPublic.post("/donation", donationItem);
+        console.log(res.data);
 
+        if (res.data?.insertedId) {
+            console.log(res.data.insertedId);
+        }
     }
 
     return (

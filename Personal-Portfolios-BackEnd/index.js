@@ -36,7 +36,7 @@ async function run() {
             // console.log("donationItem: ", donationItem);
 
             const result = await donationCollection.insertOne(donationItem);
-            // console.log(result);
+            console.log(result);
 
             res.send(result);
         })
