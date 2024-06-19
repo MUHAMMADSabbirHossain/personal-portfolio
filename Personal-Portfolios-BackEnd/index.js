@@ -31,6 +31,13 @@ async function run() {
         const donationCollection = database.collection("donations");
 
         /* donation */
+        app.get("/donations", async (req, res) => {
+            const result = await donationCollection.find().toArray();
+            console.log(result);
+
+            res.send(result);
+        })
+
         app.post("/donation", async (req, res) => {
             const donationItem = req.body;
             // console.log("donationItem: ", donationItem);

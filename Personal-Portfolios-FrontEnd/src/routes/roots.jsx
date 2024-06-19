@@ -23,7 +23,9 @@ import UpdateDonation from "../pages/DashBoard/UpdateDonation/UpdateDonation";
 import ManageDonation from "../pages/DashBoard/ManageDonation/ManageDonation";
 import ManageVolunteering from "../pages/DashBoard/ManageVolunteering/ManageVolunteering";
 import AllUsers from "../pages/DashBoard/AllUsers/AllUsers";
+import useAxiosPublic from "../hooks/useAxiosPublic";
 
+const axiosPublic = useAxiosPublic();
 const router = createBrowserRouter([
     {
         path: "/",
@@ -65,7 +67,11 @@ const router = createBrowserRouter([
             },
             {
                 path: "/donation",
-                element: <Donation></Donation>
+                element: <Donation></Donation>,
+                loader: async () => {
+                    const res = await axiosPublic.get("/donations");
+                    return res.data;
+                },
             },
             {
                 path: "/dashboard",
@@ -98,8 +104,11 @@ const router = createBrowserRouter([
                     {
                         path: "/dashboard/manageDonation",
                         element: <ManageDonation></ManageDonation>,
+                        loader: async () => {
+                            const res = await axiosPublic.get("/donations");
+                            return res.data;
+                        },
                         children: []
-
                     },
                     {
                         path: "/dashboard/manageDonation/addDonation",
