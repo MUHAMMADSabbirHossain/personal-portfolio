@@ -1,5 +1,6 @@
 import React from 'react';
 import useAxiosPublic from '../../../hooks/useAxiosPublic';
+import Swal from 'sweetalert2';
 
 const AddDonation = () => {
 
@@ -53,6 +54,58 @@ const AddDonation = () => {
 
         if (res.data?.insertedId) {
             console.log(res.data.insertedId);
+            const Toast = Swal.mixin({
+                toast: true,
+                position: "top",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
+            });
+            Toast.fire({
+                icon: "warning",
+                title: "Wait for the response."
+            })
+                .then(() => {
+                    Swal.fire({
+                        position: "center",
+                        icon: "success",
+                        title: "Your donation item has been successfully saved",
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                })
+
+        }
+        else {
+            const Toast = Swal.mixin({
+                toast: true,
+                position: "top",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
+            });
+            Toast.fire({
+                icon: "warning",
+                title: "Wait for the response."
+            })
+                .then(() => {
+                    Swal.fire({
+                        position: "center",
+                        icon: "errro",
+                        title: "Somethings went Wrong. Please try again.",
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                })
+
         }
     }
 
