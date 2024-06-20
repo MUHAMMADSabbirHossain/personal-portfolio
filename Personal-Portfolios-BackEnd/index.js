@@ -29,6 +29,7 @@ async function run() {
         /* all collections */
         const database = client.db("personalPortfoliosDb");
         const donationCollection = database.collection("donations");
+        const volunteeringCollection = database.collection("volunteerings");
 
         /* donation */
         app.get("/donations", async (req, res) => {
@@ -36,7 +37,7 @@ async function run() {
             console.log(result);
 
             res.send(result);
-        })
+        });
 
         app.post("/donation", async (req, res) => {
             const donationItem = req.body;
@@ -46,7 +47,18 @@ async function run() {
             console.log(result);
 
             res.send(result);
-        })
+        });
+
+        /* volunteering */
+        app.post("/volunteering", async (req, res) => {
+            const volunteeringItem = req.body;
+            console.log("volunteeringItem: ", volunteeringItem);
+
+            const result = await volunteeringCollection.insertOne(volunteeringItem);
+            console.log(result);
+
+            res.send(result);
+        });
 
         // Send a ping to confirm a successful connection
         // await client.db("admin").command({ ping: 1 });
