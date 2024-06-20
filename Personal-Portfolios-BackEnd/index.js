@@ -50,6 +50,13 @@ async function run() {
         });
 
         /* volunteering */
+        app.get("/volunteerings", async (req, res) => {
+            const result = await volunteeringCollection.find().toArray();
+            console.log(result);
+
+            res.send(result);
+        });
+
         app.post("/volunteering", async (req, res) => {
             const volunteeringItem = req.body;
             console.log("volunteeringItem: ", volunteeringItem);

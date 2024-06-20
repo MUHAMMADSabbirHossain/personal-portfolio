@@ -91,6 +91,10 @@ const router = createBrowserRouter([
                     {
                         path: "/dashboard/manageVolunteering",
                         element: <ManageVolunteering></ManageVolunteering>,
+                        loader: async () => {
+                            const res = await axiosPublic.get("/volunteerings");
+                            return res.data;
+                        },
                         children: []
                     },
                     {
