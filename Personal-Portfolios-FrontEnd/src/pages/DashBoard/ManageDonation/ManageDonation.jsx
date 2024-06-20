@@ -60,9 +60,10 @@ const ManageDonation = () => {
                     <tfoot>
                         <tr>
                             <th></th>
-                            <th>Name</th>
-                            <th>Job</th>
-                            <th>Favorite Color</th>
+                            <th>Photo</th>
+                            <th>Title</th>
+                            <th>Category</th>
+                            <th>Amount</th>
                             <th></th>
                         </tr>
                     </tfoot>
