@@ -1,9 +1,50 @@
 import { useLoaderData } from 'react-router-dom';
+import useAxiosPublic from '../../../hooks/useAxiosPublic';
+import Swal from 'sweetalert2';
+import { useEffect } from 'react';
 
 const ManageDonation = () => {
     const loadedDonations = useLoaderData();
     const donations = loadedDonations;
     console.log(donations);
+    const axiosPublic = useAxiosPublic();
+
+    function handleDeleteDonation(id) {
+        console.log(id);
+        // const res = await axiosPublic.delete(`donation/${id}`);
+        // console.log(res.data);
+
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                const res = await axiosPublic.delete(`donation/${id}`);
+                console.log(res.data);
+
+                if (res.data?.deletedCount === 1) {
+                    Swal.fire({
+                        title: "Deleted!",
+                        text: "Donation Item has been deleted.",
+                        icon: "success"
+                    });
+                } else {
+                    Swal.fire({
+                        position: "top",
+                        icon: "error",
+                        title: "Somethings went Wrong! Please try again.",
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                }
+            }
+        });
+    }
 
     return (
         <div>
@@ -51,7 +92,8 @@ const ManageDonation = () => {
                                 <td className='text-right'>${donation.amount}</td>
                                 <th>
                                     <button className="btn btn-ghost btn-xs">Update</button>
-                                    <button className="btn btn-ghost btn-xs">Delete</button>
+                                    <button
+                                        onClick={() => handleDeleteDonation(donation._id)} className="btn btn-ghost btn-xs">Delete</button>
                                 </th>
                             </tr>)
                         }

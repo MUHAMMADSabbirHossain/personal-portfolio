@@ -9,7 +9,7 @@ app.use(cors());
 app.use(express.json());
 
 // MongoDB connection string
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.ot5ajnb.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
@@ -44,6 +44,17 @@ async function run() {
             // console.log("donationItem: ", donationItem);
 
             const result = await donationCollection.insertOne(donationItem);
+            console.log(result);
+
+            res.send(result);
+        });
+
+        app.delete("/donation/:id", async (req, res) => {
+            const id = req.params.id;
+            console.log(id);
+
+            const query = { _id: new ObjectId(id) }
+            const result = await donationCollection.deleteOne(query);
             console.log(result);
 
             res.send(result);
