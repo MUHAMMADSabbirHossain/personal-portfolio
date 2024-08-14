@@ -63,7 +63,11 @@ const router = createBrowserRouter([
             },
             {
                 path: "/volunteering",
-                element: <Volunteering></Volunteering>
+                element: <Volunteering></Volunteering>,
+                loader: async () => {
+                    const res = await axiosPublic.get("/volunteerings");
+                    return res.data;
+                }
             },
             {
                 path: "/donation",
