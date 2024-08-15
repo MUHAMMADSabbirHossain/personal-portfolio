@@ -62,6 +62,7 @@ const ManageVolunteering = () => {
                             <th>Title</th>
                             <th>Category</th>
                             <th>Address</th>
+                            <th>Time</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -87,6 +88,7 @@ const ManageVolunteering = () => {
                                 </td>
                                 <td>{volunteering.category}</td>
                                 <td className=''>{volunteering.address}</td>
+                                <td></td>
                                 <th>
                                     <button className="btn btn-ghost btn-xs">Update</button>
                                     <button
