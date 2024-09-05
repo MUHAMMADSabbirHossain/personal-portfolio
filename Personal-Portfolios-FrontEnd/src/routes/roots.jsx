@@ -24,6 +24,7 @@ import ManageDonation from "../pages/DashBoard/ManageDonation/ManageDonation";
 import ManageVolunteering from "../pages/DashBoard/ManageVolunteering/ManageVolunteering";
 import AllUsers from "../pages/DashBoard/AllUsers/AllUsers";
 import useAxiosPublic from "../hooks/useAxiosPublic";
+import Bookmarked from "../pages/DashBoard/Bookmarked/Bookmarked";
 
 const axiosPublic = useAxiosPublic();
 const router = createBrowserRouter([
@@ -85,6 +86,10 @@ const router = createBrowserRouter([
                     {
                         path: "/dashboard/userHome",
                         element: <DashboardUserHome></DashboardUserHome>
+                    },
+                    {
+                        path: "/dashboard/bookmarked",
+                        element: <Bookmarked></Bookmarked>
                     },
 
                     /* admin dashboard */
