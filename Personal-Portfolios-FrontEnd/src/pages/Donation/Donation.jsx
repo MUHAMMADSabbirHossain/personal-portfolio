@@ -1,4 +1,4 @@
-import { useLoaderData } from 'react-router-dom';
+import { Navigate, useLoaderData, useLocation, useNavigate } from 'react-router-dom';
 import useAxiosPublic from '../../hooks/useAxiosPublic';
 import { useContext } from 'react';
 import { AuthContext } from '../../providers/AuthProvider';
@@ -12,10 +12,17 @@ const Donation = () => {
     const axiosPublic = useAxiosPublic();
     const { user } = useContext(AuthContext);
     console.log(user);
+    const navigate = useNavigate();
+    const location = useLocation();
 
 
     async function handleBookmark(donation) {
         console.log(donation);
+        if (user === null) {
+            console.log(navigate);
+
+            return navigate("/login", { state: location.pathname });
+        }
 
         const res = await axiosPublic.post(`/bookmark`, {
             email: user?.email,
