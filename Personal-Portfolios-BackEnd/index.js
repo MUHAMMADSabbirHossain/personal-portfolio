@@ -30,6 +30,7 @@ async function run() {
         const database = client.db("personalPortfoliosDb");
         const donationCollection = database.collection("donations");
         const volunteeringCollection = database.collection("volunteerings");
+        const bookmarkCollection = database.collection("bookmarks");
 
         /* donation */
         app.get("/donations", async (req, res) => {
@@ -85,6 +86,16 @@ async function run() {
             const query = { _id: new ObjectId(id) };
             const result = await volunteeringCollection.deleteOne(query);
 
+            console.log(result);
+            res.send(result);
+        });
+
+        /* bookmark */
+        app.post(`/bookmark`, async (req, res) => {
+            const bookmarkItem = req.body;
+            console.log(bookmarkItem);
+
+            const result = await bookmarkCollection.insertOne(bookmarkItem);
             console.log(result);
             res.send(result);
         });
