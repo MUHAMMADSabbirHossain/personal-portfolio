@@ -91,6 +91,13 @@ async function run() {
         });
 
         /* bookmark */
+        app.get(`/bookmarks`, async (req, res) => {
+            const result = await bookmarkCollection.find().toArray();
+            console.log(result);
+
+            res.send(result)
+        });
+
         app.post(`/bookmark`, async (req, res) => {
             const bookmarkItem = req.body;
             console.log(bookmarkItem);
