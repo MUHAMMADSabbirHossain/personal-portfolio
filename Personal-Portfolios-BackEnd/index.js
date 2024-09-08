@@ -91,12 +91,6 @@ async function run() {
         });
 
         /* bookmark */
-        app.get(`/bookmarks`, async (req, res) => {
-            const result = await bookmarkCollection.find().toArray();
-            console.log(result);
-
-            res.send(result)
-        });
 
         app.post(`/bookmark`, async (req, res) => {
             const bookmarkItem = req.body;
@@ -105,6 +99,17 @@ async function run() {
             const result = await bookmarkCollection.insertOne(bookmarkItem);
             console.log(result);
             res.send(result);
+        });
+
+        app.post(`/bookmarks`, async (req, res) => {
+            const reqEmail = req.body.email;
+            console.log(reqEmail);
+
+            const query = { email: reqEmail };
+            const result = await bookmarkCollection.find(query).toArray();
+            // console.log(result);
+
+            res.send(result)
         });
 
         // Send a ping to confirm a successful connection
