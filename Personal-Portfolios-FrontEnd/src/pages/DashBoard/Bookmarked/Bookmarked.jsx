@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import useAxiosPublic from '../../../hooks/useAxiosPublic';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../../../providers/AuthProvider';
+import Swal from 'sweetalert2';
 
 const Bookmarked = () => {
 
@@ -23,6 +24,42 @@ const Bookmarked = () => {
     console.log(bookmarks);
 
     const totalAmount = bookmarks.reduce((total, bookmark) => total + parseFloat(bookmark.amount), 0);
+
+    const handleDeletebookmark = async (bookmark) => {
+        console.log(bookmark,);
+
+        const res = await axiosPublic.delete(`/bookmark/${bookmark._id}`);
+        console.log(res.data);
+
+        if (res.data.deletedCount === 1) {
+            console.log(res.data.deletedCount);
+
+            const Toast = Swal.mixin({
+                toast: true,
+                position: "top",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
+            });
+            Toast.fire({
+                icon: "warning",
+                title: "Wait for the response."
+            })
+                .then(() => {
+                    Swal.fire({
+                        position: "center",
+                        icon: "success",
+                        title: "Your bookmarked item has been successfully deleted.",
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                })
+        }
+    }
 
     return (
         <div>
@@ -86,6 +123,8 @@ const Bookmarked = () => {
                                         className="btn btn-ghost btn-lg">
                                         <FaTrashAlt className="text-red-600"></FaTrashAlt>
                                     </button> */}
+                                    <button
+                                        onClick={() => handleDeletebookmark(bookmark)} className="btn btn-ghost btn-xs">Delete</button>
                                 </th>
                             </tr>
                             )
