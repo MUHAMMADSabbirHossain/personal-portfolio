@@ -25,6 +25,7 @@ import ManageVolunteering from "../pages/DashBoard/ManageVolunteering/ManageVolu
 import AllUsers from "../pages/DashBoard/AllUsers/AllUsers";
 import useAxiosPublic from "../hooks/useAxiosPublic";
 import Bookmarked from "../pages/DashBoard/Bookmarked/Bookmarked";
+import Payment from "../pages/DashBoard/Payment/Payment";
 
 const axiosPublic = useAxiosPublic();
 const router = createBrowserRouter([
@@ -134,8 +135,11 @@ const router = createBrowserRouter([
                     {
                         path: "/dashboard/allUsers",
                         element: <AllUsers></AllUsers>
-                    }
-
+                    },
+                    {
+                        path: "/dashboard/payment",
+                        element: <Payment></Payment>
+                    },
                 ]
             },
             {
