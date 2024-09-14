@@ -32,6 +32,7 @@ async function run() {
         const donationCollection = database.collection("donations");
         const volunteeringCollection = database.collection("volunteerings");
         const bookmarkCollection = database.collection("bookmarks");
+        const paymentCollection = database.collection("payments");
 
         /* donation */
         app.get("/donations", async (req, res) => {
@@ -122,6 +123,8 @@ async function run() {
             res.send(result)
         });
 
+        /* payment */
+
         /* payment intent */
         app.post("/create-payment-intent", async (req, res) => {
 
@@ -139,6 +142,24 @@ async function run() {
             res.send({
                 clientSecret: paymentIntent.client_secret
             });
+        });
+
+        app.post("/payments", async (req, res) => {
+            const payment = req.body;
+            console.log(payment);
+
+            // insert payment details
+            const paymentResult = await paymentCollection.insertOne(payment);
+
+            // delete each item from the cart
+            const query = {
+                _id: {
+                    $in: payment.bookmarkIds.map(id => new ObjectId(id))
+                }
+            }
+            const deleteResult = await bookmarkCollection.deleteMany(query);
+
+            res.send({ paymentResult, deleteResult });
         });
 
         // Send a ping to confirm a successful connection

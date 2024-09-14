@@ -116,7 +116,7 @@ const Bookmarked = () => {
                                     </div>
                                 </td> */}
                                 <td>{bookmark.donationTitle}</td>
-                                <td>${bookmark.amount}</td>
+                                <td>${bookmark.donationAmount}</td>
                                 <th>
                                     {/* <button
                                         onClick={() => handleDelete(bookmark._id)}

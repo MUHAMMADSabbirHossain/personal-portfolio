@@ -2,6 +2,7 @@ import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
 import React, { useContext, useEffect, useState } from 'react';
 import useAxiosPublic from '../../../hooks/useAxiosPublic';
 import { AuthContext } from '../../../providers/AuthProvider';
+import Swal from 'sweetalert2';
 
 const CheckoutForm = () => {
 
@@ -22,18 +23,22 @@ const CheckoutForm = () => {
             })
             setBookmarks(res.data);
 
-            const totalAmount = res.data.reduce((total, bookmark) => total + parseFloat(bookmark.amount), 0);
+            const totalAmount = res.data.reduce((total, bookmark) => total + parseFloat(bookmark.donationAmount), 0);
 
-            // Create PaymentIntent as soon as the page loads
-            (async () => {
-                const res = await axiosPublic.post("/create-payment-intent", {
-                    price: totalAmount
-                })
-                console.log(res.data.clientSecret);
-                setClientSecret(res.data.clientSecret);
-            })()
+            if (totalAmount > 0) {
+                // Create PaymentIntent as soon as the page loads
+                (async () => {
+                    const res = await axiosPublic.post("/create-payment-intent", {
+                        price: totalAmount
+                    })
+                    console.log(res.data.clientSecret);
+                    setClientSecret(res.data.clientSecret);
+                })()
+            } else {
+                console.log("For stripe, totalAmount must be greater then 0: ", totalAmount);
+
+            }
         })()
-
 
 
         // axiosPublic.post("/bookmarks", {
@@ -122,8 +127,35 @@ const CheckoutForm = () => {
             console.log("payment intent: ", paymentIntent);
             if (paymentIntent.status === "succeeded") {
                 console.log("transaction id: ", paymentIntent.id);
-                setTransactionId(paymentIntent.id)
-                    ;
+                setTransactionId(paymentIntent.id);
+
+                console.log("bookmarks before object: ", bookmarks, bookmarks.reduce((total, bookmark) => total + parseFloat(bookmark.amount), 0), user.email);
+
+                // save the payment in th DB
+                const payment = {
+                    email: user.email,
+                    amount: bookmarks.reduce((total, bookmark) => total + parseFloat(bookmark.amount), 0),
+                    transactionId: paymentIntent.id,
+                    data: new Date(), // utc date convert. use moment js
+                    bookmarkIds: bookmarks.map(bookmark => bookmark._id),
+                    status: "pending",
+                }
+
+                console.log('payment object: ', payment);
+
+
+                const res = await axiosPublic.post("/payments", payment);
+                console.log("payment saved: ", res.data);
+                if (res.data?.paymentResult?.insertedId) {
+                    Swal.fire({
+                        position: "center",
+                        icon: "success",
+                        title: "Thanks to your generous donation.",
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                }
+
             }
         }
 
