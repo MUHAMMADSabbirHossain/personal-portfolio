@@ -3,6 +3,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import useAxiosPublic from '../../../hooks/useAxiosPublic';
 import { AuthContext } from '../../../providers/AuthProvider';
 import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router-dom';
 
 const CheckoutForm = () => {
 
@@ -14,6 +15,7 @@ const CheckoutForm = () => {
     const axiosPublic = useAxiosPublic();
     const [bookmarks, setBookmarks] = useState([]);
     const { user } = useContext(AuthContext);
+    const navigate = useNavigate();
 
     useEffect(() => {
 
@@ -134,7 +136,7 @@ const CheckoutForm = () => {
                 // save the payment in th DB
                 const payment = {
                     email: user.email,
-                    amount: bookmarks.reduce((total, bookmark) => total + parseFloat(bookmark.amount), 0),
+                    amount: bookmarks.reduce((total, bookmark) => total + parseFloat(bookmark.donationAmount), 0),
                     transactionId: paymentIntent.id,
                     data: new Date(), // utc date convert. use moment js
                     bookmarkIds: bookmarks.map(bookmark => bookmark._id),
@@ -153,7 +155,9 @@ const CheckoutForm = () => {
                         title: "Thanks to your generous donation.",
                         showConfirmButton: false,
                         timer: 1500
-                    })
+                    });
+
+                    navigate("/dashboard/paymentHistory");
                 }
 
             }

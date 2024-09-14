@@ -26,6 +26,7 @@ import AllUsers from "../pages/DashBoard/AllUsers/AllUsers";
 import useAxiosPublic from "../hooks/useAxiosPublic";
 import Bookmarked from "../pages/DashBoard/Bookmarked/Bookmarked";
 import Payment from "../pages/DashBoard/Payment/Payment";
+import PaymentHistory from "../pages/DashBoard/PaymentHistory/PaymentHistory";
 
 const axiosPublic = useAxiosPublic();
 const router = createBrowserRouter([
@@ -139,6 +140,10 @@ const router = createBrowserRouter([
                     {
                         path: "/dashboard/payment",
                         element: <Payment></Payment>
+                    },
+                    {
+                        path: "/dashboard/paymentHistory",
+                        element: <PaymentHistory></PaymentHistory>
                     },
                 ]
             },

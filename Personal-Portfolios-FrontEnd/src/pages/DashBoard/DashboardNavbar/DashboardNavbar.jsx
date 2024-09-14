@@ -25,6 +25,7 @@ const DashboardNavbar = () => {
         <li><NavLink to="/dashboard/manageDonation">manageDonation</NavLink></li>
         <li><NavLink to="/dashboard/allUsers">allUsers</NavLink></li>
         <li><NavLink to="/dashboard/bookmarked">bookmarked</NavLink></li>
+        <li><NavLink to="/dashboard/paymentHistory">paymentHistory</NavLink></li>
     </>
     return (
         <div>
