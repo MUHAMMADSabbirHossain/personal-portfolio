@@ -1,105 +1,86 @@
-import React from 'react';
-import Swal from 'sweetalert2';
+import React, { useEffect, useState } from 'react';
 import useAxiosPublic from '../../../../hooks/useAxiosPublic';
+import { useNavigate, useParams } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
-const AddVolunteering = () => {
+const UpdateVolunteering = () => {
 
-    const handleAddVolunteering = async (event) => {
+    const axiosPublic = useAxiosPublic();
+    const param = useParams();
+    console.log(param);
+    const [selectedVolunteering, setSelectedVolunteering] = useState({});
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        (async () => {
+            const res = await axiosPublic.get(`/volunteering/${param.id}`);
+            console.log(res.data);
+            setSelectedVolunteering(res.data);
+        })();
+
+    }, []);
+
+    console.log(selectedVolunteering);
+
+    const handleUpdateVolunteering = async (event) => {
         event.preventDefault();
-        console.log(event.target);
-        // console.log(event.target.title.value);
 
-        const axiosPublic = useAxiosPublic();
+        const title = event.target.title.value;
+        const category = event.target.category.value;
+        const address = event.target.address.value;
+        const photoUrl = event.target.photoUrl.value;
+        const details = event.target.details.value;
 
-        const form = new FormData(event.currentTarget);
-        const title = form.get("title");
-        const category = form.get("category");
-        const address = form.get("address");
-        const photoUrl = form.get("photoUrl");
-        const details = form.get("details");
-        console.log(title, category, address, details);
-        const donationItem = {
+        const updatedVolunteering = {
             title,
             category,
             address,
-            // photoUrl,
+            photoUrl,
             details
         }
+        console.log(updatedVolunteering);
 
-        const res = await axiosPublic.post("/volunteering", donationItem);
+        const res = await axiosPublic.patch(`/volunteering/${selectedVolunteering._id}`, updatedVolunteering);
         console.log(res.data);
 
-        if (res.data?.insertedId) {
-            console.log(res.data.insertedId);
-            const Toast = Swal.mixin({
-                toast: true,
-                position: "top",
+        if (res.data.modifiedCount === 1) {
+            Swal.fire({
+                position: "center",
+                icon: "success",
+                title: "Your volunteering item is updated successfully.",
                 showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true,
-                didOpen: (toast) => {
-                    toast.onmouseenter = Swal.stopTimer;
-                    toast.onmouseleave = Swal.resumeTimer;
-                }
+                timer: 1500
             });
-            Toast.fire({
-                icon: "warning",
-                title: "Wait for the response."
-            })
-                .then(() => {
-                    Swal.fire({
-                        position: "center",
-                        icon: "success",
-                        title: "Your volunteering item has been successfully saved",
-                        showConfirmButton: false,
-                        timer: 1500
-                    });
-                })
+            console.log("modifiedCount: ", res.data.modifiedCount);
 
-        }
-        else {
-            const Toast = Swal.mixin({
-                toast: true,
-                position: "top",
+            navigate("/dashboard/manageVolunteering");
+        } else {
+            Swal.fire({
+                position: "center",
+                icon: "error",
+                title: "Something worng! Try Again.",
                 showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true,
-                didOpen: (toast) => {
-                    toast.onmouseenter = Swal.stopTimer;
-                    toast.onmouseleave = Swal.resumeTimer;
-                }
+                timer: 1500
             });
-            Toast.fire({
-                icon: "warning",
-                title: "Wait for the response."
-            })
-                .then(() => {
-                    Swal.fire({
-                        position: "center",
-                        icon: "errro",
-                        title: "Somethings went Wrong. Please try again.",
-                        showConfirmButton: false,
-                        timer: 1500
-                    });
-                })
+            console.log("modifiedCount: ", res.data.modifiedCount);
         }
     }
 
     return (
         <div>
-            <h2 className="text-center">Add Volunteering...</h2>
+            <h2 className='text-center'>Update Volunteering...</h2>
 
             <div className="min-h-screen bg-base-200 rounded-xl">
                 <div className="hero-content flex-col lg:flex-row-reverse m-10 mx-auto">
 
                     <div className="card shrink-0 w-full shadow-2xl bg-base-100">
-                        <form onSubmit={handleAddVolunteering} className="card-body">
+                        <form onSubmit={handleUpdateVolunteering} className="card-body">
 
                             <div className="form-control">
                                 <label className="label">
                                     <span className="label-text">Title</span>
                                 </label>
-                                <input type="text" name='title' id='title' placeholder="" className="input input-bordered" />
+                                <input type="text" name='title' id='title' placeholder="" defaultValue={selectedVolunteering.title} className="input input-bordered" />
                             </div>
 
                             <div className='grid sm:grid-cols-2 gap-5'>
@@ -108,7 +89,7 @@ const AddVolunteering = () => {
                                     <div className="label">
                                         <span className="label-text">Category</span>
                                     </div>
-                                    <select name='category' className="select select-bordered" defaultValue="default">
+                                    <select name='category' className="select select-bordered" defaultValue={selectedVolunteering.category}>
                                         <option disabled value="default">Select one</option>
                                         <option value="cleanDrinkingWater">Clean Drinking Water</option>
                                         <option value="cleanDrinkingWater">Basic Education</option>
@@ -129,7 +110,7 @@ const AddVolunteering = () => {
                                     <label className="label">
                                         <span className="label-text">Address</span>
                                     </label>
-                                    <input type="text" name='address' placeholder="" className="input input-bordered" />
+                                    <input type="text" name='address' placeholder="" defaultValue={selectedVolunteering.address} className="input input-bordered" />
                                 </div>
                             </div>
 
@@ -138,7 +119,7 @@ const AddVolunteering = () => {
                                 <div className="label">
                                     <span className="label-text">Photo</span>
                                 </div>
-                                <input name='photoUrl' type="file" className="file-input file-input-bordered w-full max-w-xs" />
+                                <input name='photoUrl' type="file" defaultValue={selectedVolunteering.photoUrl} className="file-input file-input-bordered w-full max-w-xs" />
                             </label>
 
                             {/* <div className="form-control">
@@ -152,12 +133,12 @@ const AddVolunteering = () => {
                                 <div className="label">
                                     <span className="label-text">Details</span>
                                 </div>
-                                <textarea name='details' className="textarea textarea-bordered h-24" placeholder="Write details about the volunteering..."></textarea>
+                                <textarea name='details' className="textarea textarea-bordered h-24" placeholder="Write details about the volunteering..." defaultValue={selectedVolunteering.details}></textarea>
                             </label>
 
                             <div className="form-control mt-6">
                                 {/* <button className="btn btn-primary">Add Donation</button> */}
-                                <input className="btn btn-primary" type="submit" value="Add Volunteering" />
+                                <input className="btn btn-primary" type="submit" value="Update Volunteering" />
                             </div>
                         </form>
                     </div>
@@ -167,4 +148,4 @@ const AddVolunteering = () => {
     );
 };
 
-export default AddVolunteering;
+export default UpdateVolunteering;

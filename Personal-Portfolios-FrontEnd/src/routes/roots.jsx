@@ -18,7 +18,7 @@ import DashboardUserHome from "../pages/DashBoard/DashboardUserHome/DashboardUse
 import DashboardAdminHome from "../pages/DashBoard/DashboardAdminHome/DashboardAdminHome";
 import AddVolunteering from "../pages/DashBoard/ManageVolunteering/AddVolunteering/AddVolunteering";
 import AddDonation from "../pages/DashBoard/ManageDonation/AddDonation/AddDonation";
-import UpdateVolunteering from "../pages/DashBoard/UpdateVolunteering/UpdateVolunteering";
+import UpdateVolunteering from "../pages/DashBoard/ManageVolunteering/UpdateVolunteering/UpdateVolunteering";
 import UpdateDonation from "../pages/DashBoard/ManageDonation/UpdateDonation/UpdateDonation";
 import ManageDonation from "../pages/DashBoard/ManageDonation/ManageDonation";
 import ManageVolunteering from "../pages/DashBoard/ManageVolunteering/ManageVolunteering";

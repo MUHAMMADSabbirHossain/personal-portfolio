@@ -94,7 +94,10 @@ const ManageVolunteering = () => {
                                 <td className=''>{volunteering.address}</td>
                                 <td></td>
                                 <th>
-                                    <button className="btn btn-ghost btn-xs">Update</button>
+                                    <Link to={`/dashboard/manageVolunteering/updateVolunteering/${volunteering._id}`}>
+                                        <button className="btn btn-ghost btn-xs">Update</button>
+                                    </Link>
+
                                     <button
                                         onClick={() => handleDeleteVolunteering(volunteering._id)} className="btn btn-ghost btn-xs">Delete</button>
                                 </th>

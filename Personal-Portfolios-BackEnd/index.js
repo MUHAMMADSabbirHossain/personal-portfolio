@@ -101,11 +101,40 @@ async function run() {
             res.send(result);
         });
 
+        app.get("/volunteering/:id", async (req, res) => {
+            const id = req.params.id;
+            console.log(id);
+
+            const query = { _id: new ObjectId(id) };
+
+            const result = await volunteeringCollection.findOne(query);
+            console.log(result);
+
+            res.send(result);
+        });
+
         app.post("/volunteering", async (req, res) => {
             const volunteeringItem = req.body;
             console.log("volunteeringItem: ", volunteeringItem);
 
             const result = await volunteeringCollection.insertOne(volunteeringItem);
+            console.log(result);
+
+            res.send(result);
+        });
+
+        app.patch(`/volunteering/:id`, async (req, res) => {
+            const id = req.params.id;
+            const updatedVolunteeringItem = req.body;
+            console.log(id, updatedVolunteeringItem);
+
+            const filter = { _id: new ObjectId(id) };
+
+            const updateDoc = {
+                $set: updatedVolunteeringItem
+            }
+
+            const result = await volunteeringCollection.updateOne(filter, updateDoc);
             console.log(result);
 
             res.send(result);
