@@ -112,6 +112,17 @@ const AddVolunteering = () => {
                                     <select name='category' className="select select-bordered" defaultValue="default">
                                         <option disabled value="default">Select one</option>
                                         <option value="cleanDrinkingWater">Clean Drinking Water</option>
+                                        <option value="cleanDrinkingWater">Basic Education</option>
+                                        <option value="cleanDrinkingWater">Animals Care</option>
+                                        <option value="cleanDrinkingWater">Arts and Culture</option>
+                                        <option value="cleanDrinkingWater">Save Homelessness</option>
+                                        <option value="cleanDrinkingWater">Refuge Support</option>
+                                        <option value="cleanDrinkingWater">Health Care</option>
+                                        <option value="cleanDrinkingWater">Autism Awarness</option>
+                                        <option value="cleanDrinkingWater">Floo Donation</option>
+                                        <option value="cleanDrinkingWater">Earthquake Donation</option>
+                                        <option value="cleanDrinkingWater">Energy Providing</option>
+                                        <option value="cleanDrinkingWater">Traffic Donation</option>
                                     </select>
                                 </label>
 
