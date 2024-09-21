@@ -17,7 +17,7 @@ import Donation from "../pages/Donation/Donation";
 import DashboardUserHome from "../pages/DashBoard/DashboardUserHome/DashboardUserHome";
 import DashboardAdminHome from "../pages/DashBoard/DashboardAdminHome/DashboardAdminHome";
 import AddVolunteering from "../pages/DashBoard/AddVolunteering/AddVolunteering";
-import AddDonation from "../pages/DashBoard/AddDonation.jsx/AddDonation";
+import AddDonation from "../pages/DashBoard/ManageDonation/AddDonation/AddDonation";
 import UpdateVolunteering from "../pages/DashBoard/UpdateVolunteering/UpdateVolunteering";
 import UpdateDonation from "../pages/DashBoard/ManageDonation/UpdateDonation/UpdateDonation";
 import ManageDonation from "../pages/DashBoard/ManageDonation/ManageDonation";
