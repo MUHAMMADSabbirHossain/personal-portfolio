@@ -105,7 +105,7 @@ const Donation = () => {
                                     <button
                                         onClick={() => handleBookmark(donation)}
                                         className="btn btn-primary">Bookmark</button>
-                                    <button className="btn btn-primary">Donate now!</button>
+                                    {/* <button className="btn btn-primary">Donate now!</button> */}
                                 </div>
                             </div>
                         </div>

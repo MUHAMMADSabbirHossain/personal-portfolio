@@ -22,7 +22,7 @@ const Volunteering = () => {
                                 <p>{volunteering.details}</p>
                                 <div className="card-actions justify-end">
                                     <button className="btn btn-primary">Bookmark</button>
-                                    <button className="btn btn-primary">Volunteering now!</button>
+                                    {/* <button className="btn btn-primary">Volunteering now!</button> */}
                                 </div>
                             </div>
                         </div>
