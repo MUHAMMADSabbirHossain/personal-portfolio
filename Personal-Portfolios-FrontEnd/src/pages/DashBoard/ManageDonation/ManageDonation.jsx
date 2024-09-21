@@ -93,7 +93,9 @@ const ManageDonation = () => {
                                 <td>{donation.category}</td>
                                 <td className='text-right'>${donation.amount}</td>
                                 <th>
-                                    <button className="btn btn-ghost btn-xs">Update</button>
+                                    <Link to={`/dashboard/manageDonation/updateDonation/${donation._id}`}>
+                                        <button className="btn btn-ghost btn-xs">Update</button>
+                                    </Link>
                                     <button
                                         onClick={() => handleDeleteDonation(donation._id)} className="btn btn-ghost btn-xs">Delete</button>
                                 </th>

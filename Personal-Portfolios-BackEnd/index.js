@@ -42,6 +42,18 @@ async function run() {
             res.send(result);
         });
 
+        app.get(`/donation/:id`, async (req, res) => {
+            const id = req.params.id;
+            console.log("params Id: ", id);
+
+            const query = { _id: new ObjectId(id) }
+
+            const result = await donationCollection.findOne(query);
+            console.log(result);
+
+            res.send(result);
+        });
+
         app.post("/donation", async (req, res) => {
             const donationItem = req.body;
             // console.log("donationItem: ", donationItem);
@@ -50,6 +62,24 @@ async function run() {
             console.log(result);
 
             res.send(result);
+        });
+
+        app.patch("/donation/:id", async (req, res) => {
+            const id = req.params.id;
+            const updatedDonationItem = req.body;
+            console.log(id, updatedDonationItem);
+
+            const filter = { _id: new ObjectId(id) };
+
+            const updateDoc = {
+                $set: updatedDonationItem
+            }
+
+            const result = await donationCollection.updateOne(filter, updateDoc);
+            console.log(result);
+
+
+            res.send(result)
         });
 
         app.delete("/donation/:id", async (req, res) => {
