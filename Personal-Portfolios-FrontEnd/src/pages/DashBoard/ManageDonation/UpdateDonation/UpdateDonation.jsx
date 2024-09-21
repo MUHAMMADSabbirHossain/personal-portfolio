@@ -44,9 +44,9 @@ const UpdateDonation = () => {
 
         if (res.data.modifiedCount === 1) {
             Swal.fire({
-                position: "top-center",
+                position: "center",
                 icon: "success",
-                title: "Your work has been saved",
+                title: "Your donation item is updated successfully.",
                 showConfirmButton: false,
                 timer: 1500
             });
@@ -55,8 +55,8 @@ const UpdateDonation = () => {
             navigate("/dashboard/manageDonation");
         } else {
             Swal.fire({
-                position: "top-center",
-                icon: "success",
+                position: "center",
+                icon: "error",
                 title: "Something worng! Try Again.",
                 showConfirmButton: false,
                 timer: 1500
