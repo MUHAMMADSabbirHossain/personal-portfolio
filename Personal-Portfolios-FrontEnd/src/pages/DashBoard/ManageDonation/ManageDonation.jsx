@@ -1,4 +1,4 @@
-import { useLoaderData } from 'react-router-dom';
+import { Link, useLoaderData } from 'react-router-dom';
 import useAxiosPublic from '../../../hooks/useAxiosPublic';
 import Swal from 'sweetalert2';
 
@@ -48,6 +48,9 @@ const ManageDonation = () => {
     return (
         <div>
             <h2 className="text-center">Manage Donation...</h2>
+            <div className='flex justify-end mx-5'>
+                <Link className='btn' to="/dashboard/manageDonation/addDonation">Add Donation</Link>
+            </div>
 
             <div className="overflow-x-auto">
                 <table className="table table-zebra table-xs md:table-md lg:table-lg">
