@@ -1,14 +1,14 @@
 import React, { useContext } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../providers/AuthProvider';
-import { FcGoogle } from "react-icons/fc";
+import SocialLogin from '../../components/SocialLogin';
 
 const Register = () => {
 
     const location = useLocation();
     const navigate = useNavigate();
 
-    const { createEmailUser, googleLogin } = useContext(AuthContext);
+    const { createEmailUser } = useContext(AuthContext);
 
     console.log(location);
 
@@ -31,21 +31,6 @@ const Register = () => {
                     "/");
             })
             .catch(error => {
-                console.error(error.message);
-            })
-    }
-
-    // google login in
-    const handleGoogleLogin = () => {
-        googleLogin()
-            .then((result) => {
-                console.log(result.user);
-                navigate(location?.state ?
-                    location.state :
-                    "/"
-                );
-            })
-            .catch((error) => {
                 console.error(error.message);
             })
     }
@@ -83,10 +68,7 @@ const Register = () => {
 
                     <div className="divider">OR</div>
 
-                    <div className="form-control my-6 mx-8">
-                        <button className="btn btn-primary" onClick={handleGoogleLogin}><FcGoogle className='text-3xl'></FcGoogle>Register in with Google</button>
-                    </div>
-
+                    <SocialLogin></SocialLogin>
                 </div>
             </div>
         </div >
