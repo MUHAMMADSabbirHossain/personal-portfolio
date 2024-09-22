@@ -33,6 +33,34 @@ async function run() {
         const volunteeringCollection = database.collection("volunteerings");
         const bookmarkCollection = database.collection("bookmarks");
         const paymentCollection = database.collection("payments");
+        const userCollection = database.collection("users");
+
+        /* user */
+        app.post(`/user`, async (req, res) => {
+            const user = req.body;
+            console.log(user);
+            const queryEmail = { email: user.email };
+            console.log(queryEmail);
+
+
+            const verifyExistingUser = await userCollection.findOne(queryEmail);
+            console.log("verifyExistingUser: ", verifyExistingUser);
+
+            if (verifyExistingUser) {
+                res.send({
+                    message: "User already existed.",
+                    insertedId: null
+                });
+            } else {
+                user[`role`] = "member";
+                console.log("user: ", user);
+
+                const result = await userCollection.insertOne(user);
+                console.log("inserted result: ", result);
+
+                res.send(result);
+            }
+        });
 
         /* donation */
         app.get("/donations", async (req, res) => {

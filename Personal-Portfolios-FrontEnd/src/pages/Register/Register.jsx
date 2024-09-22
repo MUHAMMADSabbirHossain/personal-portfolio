@@ -2,13 +2,16 @@ import React, { useContext } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../providers/AuthProvider';
 import SocialLogin from '../../components/SocialLogin';
+import Swal from 'sweetalert2';
+import useAxiosPublic from '../../hooks/useAxiosPublic';
 
 const Register = () => {
 
     const location = useLocation();
     const navigate = useNavigate();
+    const axiosPublic = useAxiosPublic();
 
-    const { createEmailUser } = useContext(AuthContext);
+    const { createEmailUser, updateUserProfile } = useContext(AuthContext);
 
     console.log(location);
 
@@ -20,18 +23,102 @@ const Register = () => {
 
         const email = form.get("email");
         const password = form.get("password");
+        const name = form.get("name");
         // console.log(email, password);
 
         // create user
         createEmailUser(email, password)
             .then(result => {
-                console.log(result.user);
-                navigate(location?.state ?
-                    location.state :
-                    "/");
-            })
-            .catch(error => {
+                console.log("user created: ", result.user);
+
+                updateUserProfile(name)
+                    .then(async data => {
+                        // console.log(data); // why undefined
+
+                        const user = {
+                            email: result.user.email,
+                            name: result.user.displayName,
+                            // role: `member`
+                        }
+                        console.log(user);
+
+                        const updateProfileRes = await axiosPublic.post(`/user`, user);
+                        console.log("user profile update in DB: ", updateProfileRes);
+
+                        if (updateProfileRes.data?.insertedId) {
+                            Swal.fire({
+                                position: "center",
+                                icon: "success",
+                                title: "Your account have created and login successfully.",
+                                showConfirmButton: false,
+                                timer: 5500
+                            });
+
+                            navigate(location?.state ?
+                                location.state :
+                                "/");
+                        } else {
+                            Swal.fire({
+                                position: "center",
+                                icon: "success",
+                                title: "Your account have already existed in DB.",
+                                showConfirmButton: false,
+                                timer: 5500
+                            });
+                        }
+
+                        /* axiosPublic.post(`/user`, user)
+                        .then(updateProfileRes=> {
+                            console.log("user profile update in DB: ", updateProfileRes);
+
+                            if (updateProfileRes.data?.insertedId) {
+                                Swal.fire({
+                                    position: "center",
+                                    icon: "success",
+                                    title: "Your account have created and login successfully.",
+                                    showConfirmButton: false,
+                                    timer: 5500
+                                });
+                                console.log("1");
+    
+                                navigate(location?.state ?
+                                    location.state :
+                                    "/");
+                            } else {
+                                Swal.fire({
+                                    position: "center",
+                                    icon: "success",
+                                    title: "Your account have already existed in DB.",
+                                    showConfirmButton: false,
+                                    timer: 5500
+                                });
+                                console.log("1");
+    
+                            }
+                        }) */
+
+                    }).catch((error) => {
+                        console.error(error.message);
+
+                        Swal.fire({
+                            position: "center",
+                            icon: "success",
+                            title: error.message, // account does't updated.
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    })
+
+            }).catch(error => {
                 console.error(error.message);
+
+                Swal.fire({
+                    position: "center",
+                    icon: "success",
+                    title: error.message, // accont does't created.
+                    showConfirmButton: false,
+                    timer: 1500
+                });
             })
     }
 
@@ -46,9 +133,15 @@ const Register = () => {
                     <form onSubmit={handleRegister} className="card-body">
                         <div className="form-control">
                             <label className="label">
+                                <span className="label-text">Name</span>
+                            </label>
+                            <input type="text" name='name' placeholder="name" className="input input-bordered" required />
+                        </div>
+                        <div className="form-control">
+                            <label className="label">
                                 <span className="label-text">Email</span>
                             </label>
-                            <input type="email" name='email' placeholder="email" className="input input-bordered" required />
+                            <input type="email" name='email' placeholder="example@mail.com" className="input input-bordered" required />
                         </div>
                         <div className="form-control">
                             <label className="label">
