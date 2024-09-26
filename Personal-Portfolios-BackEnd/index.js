@@ -69,6 +69,19 @@ async function run() {
             }
         });
 
+        app.delete(`/user/:id`, async (req, res) => {
+            const id = req.params.id;
+            console.log(id);
+
+            const query = { _id: new ObjectId(id) };
+            console.log(query);
+
+            const result = await userCollection.deleteOne(query)
+            console.log(result);
+
+            res.send(result);
+        });
+
         /* donation */
         app.get("/donations", async (req, res) => {
             const result = await donationCollection.find().toArray();
@@ -112,7 +125,6 @@ async function run() {
 
             const result = await donationCollection.updateOne(filter, updateDoc);
             console.log(result);
-
 
             res.send(result)
         });

@@ -1,15 +1,69 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import useUsers from '../../../hooks/useUsers';
+import useAxiosPublic from '../../../hooks/useAxiosPublic';
+import Swal from 'sweetalert2';
+// import { AuthContext } from '../../../providers/AuthProvider';
 
 const AllUsers = () => {
-    const { users } = useUsers();
+    const { users, refetch } = useUsers();
+    const axiosPublic = useAxiosPublic();
+    // const { deleteUserProfile } = useContext(AuthContext);
+
+    const handleUserDelete = async (id) => {
+        console.log(id);
+
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    title: "Deleted!",
+                    text: "Your file has been deleted.",
+                    icon: "success"
+                });
+
+                // for yes
+                // delete user profile from firebase
+
+                // delete user profile from mongodb
+                const res = await axiosPublic.delete(`/user/${id}`);
+                console.log(res.data);
+
+                if (res.data?.deletedCount === 1) {
+                    Swal.fire({
+                        position: "center",
+                        icon: "success",
+                        title: "User has been deleted successfully.",
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
+
+                    refetch();
+                } else {
+                    Swal.fire({
+                        position: "center",
+                        icon: "error",
+                        title: `${res.data?.message}`,
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
+                }
+            }
+        });
+    }
 
     return (
         <div>
             <h2 className="text-center">All Usres...</h2>
 
             <div className="overflow-x-auto">
-                <table className="table">
+                <table className="table table-xs">
                     {/* head */}
                     <thead>
                         <tr>
@@ -56,7 +110,7 @@ const AllUsers = () => {
                                 <td>{user.role}</td>
                                 <th>
                                     <button className="btn btn-ghost btn-xs">Update</button>
-                                    <button className="btn btn-ghost btn-xs">Delete</button>
+                                    <button onClick={() => handleUserDelete(user._id)} className="btn btn-ghost btn-xs">Delete</button>
                                 </th>
                             </tr>
                             )
