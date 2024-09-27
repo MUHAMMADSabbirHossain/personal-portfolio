@@ -1,8 +1,13 @@
 import React from 'react';
 import Swal from 'sweetalert2';
 import useAxiosPublic from '../../../../hooks/useAxiosPublic';
+import useCategoris from '../../../../hooks/useCategoris';
+import useImageUploader from '../../ManageDonation/AddDonation/useImageUploader';
 
 const AddVolunteering = () => {
+
+    const { categories } = useCategoris();
+    const { imageUpload } = useImageUploader();
 
     const handleAddVolunteering = async (event) => {
         event.preventDefault();
@@ -18,70 +23,78 @@ const AddVolunteering = () => {
         const photoUrl = form.get("photoUrl");
         const details = form.get("details");
         console.log(title, category, address, details);
-        const donationItem = {
+        const volunteeringItem = {
             title,
             category,
             address,
-            // photoUrl,
             details
-        }
+        };
 
-        const res = await axiosPublic.post("/volunteering", donationItem);
-        console.log(res.data);
+        const photoUploadRes = await imageUpload(photoUrl);
+        console.log(photoUploadRes);
 
-        if (res.data?.insertedId) {
-            console.log(res.data.insertedId);
-            const Toast = Swal.mixin({
-                toast: true,
-                position: "top",
-                showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true,
-                didOpen: (toast) => {
-                    toast.onmouseenter = Swal.stopTimer;
-                    toast.onmouseleave = Swal.resumeTimer;
-                }
-            });
-            Toast.fire({
-                icon: "warning",
-                title: "Wait for the response."
-            })
-                .then(() => {
-                    Swal.fire({
-                        position: "center",
-                        icon: "success",
-                        title: "Your volunteering item has been successfully saved",
-                        showConfirmButton: false,
-                        timer: 1500
-                    });
+        if (photoUploadRes?.status === 200) {
+            // after getting success response from image upload send the data to DB.
+            volunteeringItem[`photoUrl`] = photoUploadRes.data?.display_url;
+            console.log(volunteeringItem);
+
+            const res = await axiosPublic.post("/volunteering", volunteeringItem);
+            console.log(res.data);
+
+            if (res.data?.insertedId) {
+                console.log(res.data.insertedId);
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                    }
+                });
+                Toast.fire({
+                    icon: "warning",
+                    title: "Wait for the response."
                 })
+                    .then(() => {
+                        Swal.fire({
+                            position: "center",
+                            icon: "success",
+                            title: "Your volunteering item has been successfully saved",
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    })
 
-        }
-        else {
-            const Toast = Swal.mixin({
-                toast: true,
-                position: "top",
-                showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true,
-                didOpen: (toast) => {
-                    toast.onmouseenter = Swal.stopTimer;
-                    toast.onmouseleave = Swal.resumeTimer;
-                }
-            });
-            Toast.fire({
-                icon: "warning",
-                title: "Wait for the response."
-            })
-                .then(() => {
-                    Swal.fire({
-                        position: "center",
-                        icon: "errro",
-                        title: "Somethings went Wrong. Please try again.",
-                        showConfirmButton: false,
-                        timer: 1500
-                    });
+            }
+            else {
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                    }
+                });
+                Toast.fire({
+                    icon: "warning",
+                    title: "Wait for the response."
                 })
+                    .then(() => {
+                        Swal.fire({
+                            position: "center",
+                            icon: "errro",
+                            title: "Somethings went Wrong. Please try again.",
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    })
+            }
         }
     }
 
@@ -110,18 +123,9 @@ const AddVolunteering = () => {
                                     </div>
                                     <select name='category' className="select select-bordered" defaultValue="default">
                                         <option disabled value="default">Select one</option>
-                                        <option value="cleanDrinkingWater">Clean Drinking Water</option>
-                                        <option value="cleanDrinkingWater">Basic Education</option>
-                                        <option value="cleanDrinkingWater">Animals Care</option>
-                                        <option value="cleanDrinkingWater">Arts and Culture</option>
-                                        <option value="cleanDrinkingWater">Save Homelessness</option>
-                                        <option value="cleanDrinkingWater">Refuge Support</option>
-                                        <option value="cleanDrinkingWater">Health Care</option>
-                                        <option value="cleanDrinkingWater">Autism Awarness</option>
-                                        <option value="cleanDrinkingWater">Floo Donation</option>
-                                        <option value="cleanDrinkingWater">Earthquake Donation</option>
-                                        <option value="cleanDrinkingWater">Energy Providing</option>
-                                        <option value="cleanDrinkingWater">Traffic Donation</option>
+                                        {
+                                            categories.map((category, index) => <option value={category.value} key={index}>{category.name}</option>)
+                                        }
                                     </select>
                                 </label>
 
@@ -129,14 +133,14 @@ const AddVolunteering = () => {
                                     <label className="label">
                                         <span className="label-text">Address</span>
                                     </label>
-                                    <input type="text" name='address' placeholder="" className="input input-bordered" />
+                                    <input type="text" name='address' placeholder="local-area, city" className="input input-bordered" />
                                 </div>
                             </div>
 
 
                             <label className="form-control w-full max-w-xs">
                                 <div className="label">
-                                    <span className="label-text">Photo</span>
+                                    <span className="label-text">Photo (up to 32mb)</span>
                                 </div>
                                 <input name='photoUrl' type="file" className="file-input file-input-bordered w-full max-w-xs" />
                             </label>
@@ -150,7 +154,7 @@ const AddVolunteering = () => {
 
                             <label className="form-control">
                                 <div className="label">
-                                    <span className="label-text">Details</span>
+                                    <span className="label-text">Details (up to 150 alphabets)</span>
                                 </div>
                                 <textarea name='details' className="textarea textarea-bordered h-24" placeholder="Write details about the volunteering..."></textarea>
                             </label>

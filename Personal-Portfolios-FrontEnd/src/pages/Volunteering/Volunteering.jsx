@@ -14,15 +14,22 @@ const Volunteering = () => {
             <section className='grid md:grid-cols-2 lg:grid-cols-3 gap-5 m-5'>
                 {
                     volunteerings.map((volunteering) => <div key={volunteering._id}>
-                        <div className="card max-w-96 glass mx-auto">
-                            <figure><img src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg" alt={volunteering.title} /></figure>
+                        <div className="card max-w-96 glass mx-auto  hover:scale-105 ease-in-out duration-300 hover:bg-gray-900 hover:text-white hover:shadow-inner">
+                            <figure className="px-5 pt-5"><img src={volunteering?.photoUrl} alt={volunteering?.title} className='shadow-2xl' /></figure>
                             <div className="card-body">
-                                <h2 className="card-title">{volunteering.title} <div className="badge badge-secondary font-bold">${volunteering.amount}</div>
-                                </h2>
-                                <p>{volunteering.details}</p>
+                                <h2 className="card-title">{volunteering.title} </h2>
+                                <div className="badge badge-secondary font-bold">{volunteering?.address.slice(0, 25)}</div>
+                                <p>{
+                                    volunteering?.details.length < 100 ?
+                                        volunteering?.details :
+                                        volunteering?.details.slice(0, 100)
+                                }... (Read More)</p>
+                                {/* <p>{volunteering.details}</p> */}
                                 <div className="card-actions justify-end">
-                                    <button className="btn btn-primary">Bookmark</button>
-                                    {/* <button className="btn btn-primary">Volunteering now!</button> */}
+                                    <button
+                                        onClick={() => handleBookmark(volunteering)}
+                                        className="btn btn-primary">Bookmark</button>
+                                    {/* <button className="btn btn-primary">Donate now!</button> */}
                                 </div>
                             </div>
                         </div>
