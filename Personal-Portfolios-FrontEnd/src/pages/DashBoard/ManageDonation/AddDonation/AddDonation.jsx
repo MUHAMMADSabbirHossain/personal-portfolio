@@ -2,13 +2,13 @@ import React from 'react';
 import Swal from 'sweetalert2';
 import useAxiosPublic from '../../../../hooks/useAxiosPublic';
 import useCategoris from '../../../../hooks/useCategoris';
+import useImageUploader from './useImageUploader';
 
 const AddDonation = () => {
 
-    const image_hosting_key = import.meta.env.VITE_APIKEY_IMGBB;
-    const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`
     const axiosPublic = useAxiosPublic();
-    const { categoris } = useCategoris();
+    const { categories } = useCategoris();
+    const { imageUpload } = useImageUploader();
 
     const handleAddDonaiton = async (event) => {
         event.preventDefault();
@@ -28,7 +28,7 @@ const AddDonation = () => {
             category,
             amount,
             details
-        }
+        };
 
         // fetch(`http://localhost:5000/donation`, {
         //     method: "POST",
@@ -53,21 +53,12 @@ const AddDonation = () => {
         //         console.error(error);
         //     })
 
-        const data = new FormData();
-        data.append("image", photoUrl);
-        console.log(data, photoUrl);
+        const photoUploadRes = await imageUpload(photoUrl);
+        console.log(photoUploadRes);
 
-        const photoRes = await axiosPublic.post(image_hosting_api, data, {
-            headers: {
-                "Content-Type": "application/octet-stream"
-            }
-        })
-        console.log(photoRes.data);
-
-        if (photoRes.data.status === 200) {
-
+        if (photoUploadRes?.status === 200) {
             // after getting success response from image upload send the data to DB.
-            donationItem.photoUrl = photoRes.data.data?.display_url;
+            donationItem.photoUrl = photoUploadRes.data?.display_url;
             console.log("donation Item: ", donationItem);
 
             const res = await axiosPublic.post("/donation", donationItem);
@@ -156,7 +147,7 @@ const AddDonation = () => {
                                     <select name='category' className="select select-bordered" defaultValue="default">
                                         <option disabled value="default" required>Select one</option>
                                         {
-                                            categoris.map((category, index) => <option value={category.value} key={index}>{category.name}</option>)
+                                            categories.map((category, index) => <option value={category.value} key={index}>{category.name}</option>)
                                         }
                                     </select>
                                 </label>

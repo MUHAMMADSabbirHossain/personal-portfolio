@@ -1,5 +1,5 @@
 const useCategoris = () => {
-    const categoris = [
+    const categories = [
         { name: `Animal Shelter`, value: `animalShelter` },
         { name: `Baby Sit`, value: `babySit` },
         { name: `Bird House`, value: `birdHouse` },
@@ -26,7 +26,7 @@ const useCategoris = () => {
         { name: `Vote Register`, value: `vote Register` },
         // { name: ``, value: `` },
     ]
-    return { categoris };
+    return { categories };
 };
 
 export default useCategoris;

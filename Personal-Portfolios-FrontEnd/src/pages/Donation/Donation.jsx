@@ -95,14 +95,14 @@ const Donation = () => {
                 {
                     donations.map((donation) => <div key={donation._id}>
                         <div className="card max-w-96 glass mx-auto  hover:scale-105 ease-in-out duration-300 hover:bg-gray-900 hover:text-white hover:shadow-inner">
-                            <figure className="px-5 pt-5"><img src={donation?.photoUrl} alt={donation.title} className='shadow-2xl' /></figure>
+                            <figure className="px-5 pt-5"><img src={donation?.photoUrl} alt={donation?.title} className='shadow-2xl' /></figure>
                             <div className="card-body">
-                                <h2 className="card-title">{donation.title} <div className="badge badge-secondary font-bold">${donation.amount}</div>
+                                <h2 className="card-title">{donation?.title} <div className="badge badge-secondary font-bold">${donation?.amount}</div>
                                 </h2>
                                 <p>{
-                                    donation.details.length < 100 ?
-                                        donation.details :
-                                        donation.details.slice(0, 100)
+                                    donation?.details.length < 100 ?
+                                        donation?.details :
+                                        donation?.details.slice(0, 100)
                                 }... (Read More)</p>
                                 {/* <p>{donation.details}</p> */}
                                 <div className="card-actions justify-end">
