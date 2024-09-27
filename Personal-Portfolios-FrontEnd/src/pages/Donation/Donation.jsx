@@ -1,4 +1,4 @@
-import { Navigate, useLoaderData, useLocation, useNavigate } from 'react-router-dom';
+import { useLoaderData, useLocation, useNavigate } from 'react-router-dom';
 import useAxiosPublic from '../../hooks/useAxiosPublic';
 import { useContext } from 'react';
 import { AuthContext } from '../../providers/AuthProvider';
@@ -14,7 +14,6 @@ const Donation = () => {
     console.log(user);
     const navigate = useNavigate();
     const location = useLocation();
-
 
     async function handleBookmark(donation) {
         console.log(donation);
@@ -95,12 +94,17 @@ const Donation = () => {
             <section className='grid md:grid-cols-2 lg:grid-cols-3 gap-5 m-5'>
                 {
                     donations.map((donation) => <div key={donation._id}>
-                        <div className="card max-w-96 glass mx-auto">
-                            <figure><img src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg" alt={donation.title} /></figure>
+                        <div className="card max-w-96 glass mx-auto  hover:scale-105 ease-in-out duration-300 hover:bg-gray-900 hover:text-white hover:shadow-inner">
+                            <figure className="px-5 pt-5"><img src={donation?.photoUrl} alt={donation.title} className='shadow-2xl' /></figure>
                             <div className="card-body">
                                 <h2 className="card-title">{donation.title} <div className="badge badge-secondary font-bold">${donation.amount}</div>
                                 </h2>
-                                <p>{donation.details}</p>
+                                <p>{
+                                    donation.details.length < 100 ?
+                                        donation.details :
+                                        donation.details.slice(0, 100)
+                                }... (Read More)</p>
+                                {/* <p>{donation.details}</p> */}
                                 <div className="card-actions justify-end">
                                     <button
                                         onClick={() => handleBookmark(donation)}

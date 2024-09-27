@@ -1,16 +1,19 @@
 import React from 'react';
-
 import Swal from 'sweetalert2';
 import useAxiosPublic from '../../../../hooks/useAxiosPublic';
+import useCategoris from '../../../../hooks/useCategoris';
 
 const AddDonation = () => {
+
+    const image_hosting_key = import.meta.env.VITE_APIKEY_IMGBB;
+    const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`
+    const axiosPublic = useAxiosPublic();
+    const { categoris } = useCategoris();
 
     const handleAddDonaiton = async (event) => {
         event.preventDefault();
         console.log(event.target);
         console.log(event.target.title.value);
-
-        const axiosPublic = useAxiosPublic();
 
         const form = new FormData(event.currentTarget);
         const title = form.get("title");
@@ -18,12 +21,12 @@ const AddDonation = () => {
         const amount = form.get("amount");
         const photoUrl = form.get("photoUrl");
         const details = form.get("details");
-        console.log(title, category, amount, details);
+        console.log(title, category, amount, photoUrl, details);
+
         const donationItem = {
             title,
             category,
             amount,
-            // photoUrl,
             details
         }
 
@@ -50,63 +53,80 @@ const AddDonation = () => {
         //         console.error(error);
         //     })
 
-        const res = await axiosPublic.post("/donation", donationItem);
-        console.log(res.data);
+        const data = new FormData();
+        data.append("image", photoUrl);
+        console.log(data, photoUrl);
 
-        if (res.data?.insertedId) {
-            console.log(res.data.insertedId);
-            const Toast = Swal.mixin({
-                toast: true,
-                position: "top",
-                showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true,
-                didOpen: (toast) => {
-                    toast.onmouseenter = Swal.stopTimer;
-                    toast.onmouseleave = Swal.resumeTimer;
-                }
-            });
-            Toast.fire({
-                icon: "warning",
-                title: "Wait for the response."
-            })
-                .then(() => {
-                    Swal.fire({
-                        position: "center",
-                        icon: "success",
-                        title: "Your donation item has been successfully saved",
-                        showConfirmButton: false,
-                        timer: 1500
-                    });
+        const photoRes = await axiosPublic.post(image_hosting_api, data, {
+            headers: {
+                "Content-Type": "application/octet-stream"
+            }
+        })
+        console.log(photoRes.data);
+
+        if (photoRes.data.status === 200) {
+
+            // after getting success response from image upload send the data to DB.
+            donationItem.photoUrl = photoRes.data.data?.display_url;
+            console.log("donation Item: ", donationItem);
+
+            const res = await axiosPublic.post("/donation", donationItem);
+            console.log(res.data);
+
+            if (res.data?.insertedId) {
+                console.log(res.data.insertedId);
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                    }
+                });
+                Toast.fire({
+                    icon: "warning",
+                    title: "Wait for the response."
                 })
+                    .then(() => {
+                        Swal.fire({
+                            position: "center",
+                            icon: "success",
+                            title: "Your donation item has been successfully saved",
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    })
 
-        }
-        else {
-            const Toast = Swal.mixin({
-                toast: true,
-                position: "top",
-                showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true,
-                didOpen: (toast) => {
-                    toast.onmouseenter = Swal.stopTimer;
-                    toast.onmouseleave = Swal.resumeTimer;
-                }
-            });
-            Toast.fire({
-                icon: "warning",
-                title: "Wait for the response."
-            })
-                .then(() => {
-                    Swal.fire({
-                        position: "center",
-                        icon: "errro",
-                        title: "Somethings went Wrong. Please try again.",
-                        showConfirmButton: false,
-                        timer: 1500
-                    });
+            }
+            else {
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                    }
+                });
+                Toast.fire({
+                    icon: "warning",
+                    title: "Wait for the response."
                 })
-
+                    .then(() => {
+                        Swal.fire({
+                            position: "center",
+                            icon: "errro",
+                            title: "Somethings went Wrong. Please try again.",
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    })
+            }
         }
     }
 
@@ -124,7 +144,7 @@ const AddDonation = () => {
                                 <label className="label">
                                     <span className="label-text">Title</span>
                                 </label>
-                                <input type="text" name='title' id='title' placeholder="" className="input input-bordered" />
+                                <input type="text" name='title' id='title' placeholder="" className="input input-bordered" required />
                             </div>
 
                             <div className='grid sm:grid-cols-2 gap-5'>
@@ -134,19 +154,10 @@ const AddDonation = () => {
                                         <span className="label-text">Category</span>
                                     </div>
                                     <select name='category' className="select select-bordered" defaultValue="default">
-                                        <option disabled value="default">Select one</option>
-                                        <option value="cleanDrinkingWater">Clean Drinking Water</option>
-                                        <option value="cleanDrinkingWater">Basic Education</option>
-                                        <option value="cleanDrinkingWater">Animals Care</option>
-                                        <option value="cleanDrinkingWater">Arts and Culture</option>
-                                        <option value="cleanDrinkingWater">Save Homelessness</option>
-                                        <option value="cleanDrinkingWater">Refuge Support</option>
-                                        <option value="cleanDrinkingWater">Health Care</option>
-                                        <option value="cleanDrinkingWater">Autism Awarness</option>
-                                        <option value="cleanDrinkingWater">Flood Volunteering</option>
-                                        <option value="cleanDrinkingWater">Earthquake Volunteering</option>
-                                        <option value="cleanDrinkingWater">Energy Providing</option>
-                                        <option value="cleanDrinkingWater">Traffic Volunteering</option>
+                                        <option disabled value="default" required>Select one</option>
+                                        {
+                                            categoris.map((category, index) => <option value={category.value} key={index}>{category.name}</option>)
+                                        }
                                     </select>
                                 </label>
 
@@ -154,16 +165,15 @@ const AddDonation = () => {
                                     <label className="label">
                                         <span className="label-text">Amount</span>
                                     </label>
-                                    <input type="number" name='amount' placeholder="" className="input input-bordered" />
+                                    <input type="number" name='amount' placeholder="" className="input input-bordered" required />
                                 </div>
                             </div>
 
-
                             <label className="form-control w-full max-w-xs">
                                 <div className="label">
-                                    <span className="label-text">Photo</span>
+                                    <span className="label-text">Photo <p className='inline'>(up to 32mb)</p></span>
                                 </div>
-                                <input name='photoUrl' type="file" className="file-input file-input-bordered w-full max-w-xs" />
+                                <input name='photoUrl' type="file" className="file-input file-input-bordered w-full max-w-xs" required />
                             </label>
 
                             {/* <div className="form-control">
@@ -175,9 +185,9 @@ const AddDonation = () => {
 
                             <label className="form-control">
                                 <div className="label">
-                                    <span className="label-text">Details</span>
+                                    <span className="label-text">Details <p className='inline'>(up to 150 alphabets)</p></span>
                                 </div>
-                                <textarea name='details' className="textarea textarea-bordered h-24" placeholder="Write details about the donation..."></textarea>
+                                <textarea name='details' className="textarea textarea-bordered h-24" placeholder="Write details about the donation..." required></textarea>
                             </label>
 
                             <div className="form-control mt-6">
