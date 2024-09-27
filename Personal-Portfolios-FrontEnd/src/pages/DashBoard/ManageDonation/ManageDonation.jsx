@@ -3,6 +3,7 @@ import useAxiosPublic from '../../../hooks/useAxiosPublic';
 import Swal from 'sweetalert2';
 
 const ManageDonation = () => {
+
     const loadedDonations = useLoaderData();
     const donations = loadedDonations;
     console.log(donations);
@@ -49,10 +50,10 @@ const ManageDonation = () => {
         <div>
             <h2 className="text-center">Manage Donation...</h2>
             <div className='flex justify-end mx-5'>
-                <Link className='btn' to="/dashboard/manageDonation/addDonation">Add Donation</Link>
+                <Link className='btn btn-primary' to="/dashboard/manageDonation/addDonation">Add Donation</Link>
             </div>
 
-            <div className="overflow-x-auto">
+            <div className="overflow-x-auto px-10">
                 <table className="table table-zebra table-xs md:table-md lg:table-lg">
                     {/* head */}
                     <thead>
@@ -73,7 +74,7 @@ const ManageDonation = () => {
                     <tbody>
                         {/* row 1 */}
                         {
-                            donations.map((donation, index) => <tr key={donation._id}>
+                            donations.map((donation, index) => <tr className='hover:scale-105 ease-in-out duration-200' key={donation._id}>
                                 {/* <th>
                                     <label>
                                         <input type="checkbox" className="checkbox" />
@@ -82,7 +83,7 @@ const ManageDonation = () => {
                                 <td>{index + 1}</td>
                                 <td><div className="avatar">
                                     <div className="mask mask-squircle w-12 h-12">
-                                        <img src="" alt={donation.title} />
+                                        <img src={donation.photoUrl} alt={donation.title} />
                                     </div>
                                 </div></td>
                                 <td>

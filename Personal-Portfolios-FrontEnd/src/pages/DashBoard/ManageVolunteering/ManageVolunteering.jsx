@@ -48,10 +48,10 @@ const ManageVolunteering = () => {
             <h2 className="text-center">Manage Volunteering...</h2>
 
             <div className='flex justify-end mx-5'>
-                <Link className='btn' to="/dashboard/manageVolunteering/addVolunteering">Add Volunteering</Link>
+                <Link className='btn btn-primary' to="/dashboard/manageVolunteering/addVolunteering">Add Volunteering</Link>
             </div>
 
-            <div className="overflow-x-auto">
+            <div className="overflow-x-auto px-10">
                 <table className="table table-zebra table-xs md:table-md lg:table-lg">
                     {/* head */}
                     <thead>
@@ -73,7 +73,7 @@ const ManageVolunteering = () => {
                     <tbody>
                         {/* row 1 */}
                         {
-                            volunteerings.map((volunteering, index) => <tr key={volunteering._id}>
+                            volunteerings.map((volunteering, index) => <tr className='hover:scale-105 ease-in-out duration-200' key={volunteering._id}>
                                 {/* <th>
                                     <label>
                                         <input type="checkbox" className="checkbox" />
@@ -82,7 +82,7 @@ const ManageVolunteering = () => {
                                 <td>{index + 1}</td>
                                 <td><div className="avatar">
                                     <div className="mask mask-squircle w-12 h-12">
-                                        <img src="" alt={volunteering.title} />
+                                        <img src={volunteering.photoUrl} alt={volunteering.title} />
                                     </div>
                                 </div></td>
                                 <td>
