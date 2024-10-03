@@ -1,64 +1,51 @@
-import React, { useContext, useEffect, useState } from 'react';
-import useAxiosPublic from '../../../hooks/useAxiosPublic';
-import { Link } from 'react-router-dom';
-import { AuthContext } from '../../../providers/AuthProvider';
+import React from 'react';
+import { Link } from 'react-router-dom';;
 import Swal from 'sweetalert2';
+import useDonationBookmarked from '../../../hooks/useDonationBookmarked';
+import useAxiosSecure from '../../../hooks/useAxiosSecure';
 
 const Bookmarked = () => {
 
-    const [bookmarks, setBookmarks] = useState([]);
-    const axiosPublic = useAxiosPublic();
-    const { user } = useContext(AuthContext);
-
-    useEffect(() => {
-
-        (async () => {
-            const res = await axiosPublic.post(`/bookmarks`, {
-                email: user.email
-            });
-            setBookmarks(res.data);
-        })()
-
-    }, []);
-
-    console.log(bookmarks);
-
-    const totalAmount = bookmarks.reduce((total, bookmark) => total + parseFloat(bookmark.amount), 0);
+    const { donationBookmarked: bookmarks, refetch, donationBookmarkedTotalAmount: totalAmount } = useDonationBookmarked();
+    const axiosSecure = useAxiosSecure();
 
     const handleDeletebookmark = async (bookmark) => {
-        console.log(bookmark,);
+        console.log(bookmark);
 
-        const res = await axiosPublic.delete(`/bookmark/${bookmark._id}`);
-        console.log(res.data);
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+        }).then(async (result) => {
+            if (result.isConfirmed) {
 
-        if (res.data.deletedCount === 1) {
-            console.log(res.data.deletedCount);
+                const res = await axiosSecure.delete(`/bookmark/${bookmark._id}`);
+                console.log(res.data);
 
-            const Toast = Swal.mixin({
-                toast: true,
-                position: "top",
-                showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true,
-                didOpen: (toast) => {
-                    toast.onmouseenter = Swal.stopTimer;
-                    toast.onmouseleave = Swal.resumeTimer;
-                }
-            });
-            Toast.fire({
-                icon: "warning",
-                title: "Wait for the response."
-            })
-                .then(() => {
+                if (res.data.deletedCount === 1) {
+                    console.log(res.data.deletedCount);
                     Swal.fire({
-                        position: "center",
-                        icon: "success",
-                        title: "Your bookmarked item has been successfully deleted.",
-                        showConfirmButton: false,
-                        timer: 1500
+                        title: "Deleted!",
+                        text: "Your file has been deleted.",
+                        icon: "success"
                     });
-                })
-        }
+
+                    refetch();
+                } else {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Oops...",
+                        text: "Something went wrong!",
+                        footer: '<a href="#">Why do I have this issue?</a>'
+                    });
+                }
+            }
+        });
+
     }
 
     return (
@@ -80,7 +67,7 @@ const Bookmarked = () => {
             </div>
 
             <div className="overflow-x-auto">
-                <table className="table w-full">
+                <table className="table w-full table-xs">
                     {/* head */}
                     <thead>
                         <tr>
