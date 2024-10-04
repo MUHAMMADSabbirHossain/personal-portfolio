@@ -1,6 +1,7 @@
 import { createContext, useEffect, useState } from "react";
 import { createUserWithEmailAndPassword, deleteUser, getAuth, GoogleAuthProvider, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile } from "firebase/auth";
 import app from "../firebase/firebase-config"
+import useAxiosPublic from "../hooks/useAxiosPublic";
 
 export const AuthContext = createContext(null);
 
@@ -8,6 +9,7 @@ const AuthProvider = ({ children }) => {
 
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
+    const axiosPublic = useAxiosPublic();
 
     // Initialize Firebase Authentication and get a reference to the service
     const auth = getAuth(app);
@@ -47,7 +49,26 @@ const AuthProvider = ({ children }) => {
     useEffect(() => {
         const unSubscribe = onAuthStateChanged(auth, currentUser => {
             setUser(currentUser);
-            setLoading(false);
+            console.log(`current user: `, currentUser);
+
+            /* jwt for active user */
+            if (currentUser) {
+                const userEmail = { email: currentUser.email };
+                (async () => {
+                    const res = await axiosPublic.post(`/jwt`, userEmail)
+                    // console.log(`jwt token: `res.data);
+
+                    localStorage.setItem(`access-token`, res.data);
+                })();
+
+                setLoading(false);
+            } else {
+                console.log(`There are no current user.`);
+
+                localStorage.removeItem(`access-token`);
+
+                setLoading(false);
+            }
         });
         return () => {
             unSubscribe();

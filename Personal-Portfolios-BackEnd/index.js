@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 require('dotenv').config();
 const cors = require('cors');
+const jwt = require('jsonwebtoken');
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 const port = process.env.PORT || 5000;
 
@@ -35,10 +36,51 @@ async function run() {
         const paymentCollection = database.collection("payments");
         const userCollection = database.collection("users");
 
+        /* middleware */
+        /* verify jwt token */
+        const verifyJwtToken = async (req, res, next) => {
+            console.log(`verify jwt token: `, req.headers.authorization);
+
+            if (!req.headers.authorization) {
+                return res.status(401).send({ message: `forbidden access.` });
+            }
+
+            const token = req.headers.authorization.split(` `)[1];
+            // console.log(token);
+
+            if (!token) {
+                return res.status(401).send({ message: `forbidden access.` });
+            }
+
+            jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, async (error, decoded) => {
+                if (error) {
+                    return res.status(401).send({ message: `forbidden access.` })
+                }
+
+                res.decoded = decoded;
+                next();
+            });
+        };
+
+        /* jwt */
+        app.post(`/jwt`, async (req, res) => {
+            const email = req.body.email;
+            console.log(`jwt email: `, email);
+
+            const jwtToken = jwt.sign({
+                data: email
+            }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1h' });
+            // console.log(`jwt Token: `, jwtToken);
+
+            res.send(jwtToken);
+        });
+
         /* user */
-        app.get(`/users`, async (req, res) => {
+        app.get(`/users`, verifyJwtToken, async (req, res) => {
+            // console.log(`user headers: `, req.headers);
+
             const result = await userCollection.find().toArray();
-            console.log(result);
+            console.log(`get users: `, result);
 
             res.send(result);
         })
