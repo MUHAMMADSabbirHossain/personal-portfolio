@@ -1,7 +1,12 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import useAdmin from '../../../hooks/useAdmin';
+import AdminRoute from '../../../routes/AdminRoute';
 
 const DashboardNavbar = () => {
+
+    const { isAdmin } = useAdmin();
+    console.log(isAdmin);
 
     const dashboardNavbarList = <>
         {/* <li><a>Item 1</a></li>
@@ -18,15 +23,18 @@ const DashboardNavbar = () => {
 
         {/* regular user panel */}
         <li><NavLink to="/dashboard/userHome">userHome</NavLink></li>
-
-        {/* addmin users panel */}
-        <li><NavLink to="/dashboard/adminHome">adminHome</NavLink></li>
-        <li><NavLink to="/dashboard/manageVolunteering">manageVolunteering</NavLink></li>
-        <li><NavLink to="/dashboard/manageDonation">manageDonation</NavLink></li>
-        <li><NavLink to="/dashboard/allUsers">allUsers</NavLink></li>
         <li><NavLink to="/dashboard/bookmarked">bookmarked</NavLink></li>
         <li><NavLink to="/dashboard/paymentHistory">paymentHistory</NavLink></li>
+
+        {/* addmin users panel */}
+        <AdminRoute>
+            <li><NavLink to="/dashboard/adminHome">adminHome</NavLink></li>
+            <li><NavLink to="/dashboard/manageVolunteering">manageVolunteering</NavLink></li>
+            <li><NavLink to="/dashboard/manageDonation">manageDonation</NavLink></li>
+            <li><NavLink to="/dashboard/allUsers">allUsers</NavLink></li>
+        </AdminRoute>
     </>
+
     return (
         <div>
             {/* <h2 className='text-center'>Dashboad Navbar...</h2> */}

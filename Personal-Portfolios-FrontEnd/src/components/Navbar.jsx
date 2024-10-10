@@ -7,6 +7,7 @@ import useDonationBookmarked from "../hooks/useDonationBookmarked";
 const Navbar = () => {
 
     const { donationBookmarked, donationBookmarkedTotalAmount } = useDonationBookmarked();
+    const { user, logout } = useContext(AuthContext);
 
     const linkList = <>
         <li><NavLink to="/">Home</NavLink></li>
@@ -14,7 +15,9 @@ const Navbar = () => {
         <li><NavLink to="/components-ui">ComponentsUI</NavLink></li>
         <li><NavLink to="/volunteering">Volunteering</NavLink></li>
         <li><NavLink to="/donation">Donation</NavLink></li>
-        <li><NavLink to="/dashboard">DashBoard</NavLink></li>
+        {user?.email ?
+            <li><NavLink to="/dashboard">DashBoard</NavLink></li> : <></>
+        }
         <li><NavLink to="/about">About</NavLink></li>
         {/* <li><a>Item 1</a></li>
         <li>
@@ -28,8 +31,6 @@ const Navbar = () => {
         </li>
         <li><a>Item 3</a></li> */}
     </>;
-
-    const { user, logout } = useContext(AuthContext);
 
     const handleLogout = () => {
         logout()

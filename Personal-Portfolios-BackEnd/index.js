@@ -57,9 +57,32 @@ async function run() {
                     return res.status(401).send({ message: `forbidden access.` })
                 }
 
-                res.decoded = decoded;
+                req.decoded = decoded;
+
                 next();
             });
+        };
+
+        /* verify admin */
+        const verifyAdmin = async (req, res, next) => {
+            console.log(`decoded email: `, req.decoded);
+
+            const adminEmail = req.decoded.data;
+
+            const query = { email: adminEmail };
+
+            const result = await userCollection.findOne(query);
+            // console.log(result);
+            console.log(`user role: `, result?.role);
+
+            if (!(result?.role === `admin`)) {
+                req.admin = false;
+                return res.status(403).send({ message: `forbidden access.`, admin: req.admin });
+            }
+
+            req.admin = true;
+
+            next();
         };
 
         /* jwt */
@@ -76,14 +99,30 @@ async function run() {
         });
 
         /* user */
-        app.get(`/users`, verifyJwtToken, async (req, res) => {
+        app.get(`/users`, verifyJwtToken, verifyAdmin, async (req, res) => {
             // console.log(`user headers: `, req.headers);
 
             const result = await userCollection.find().toArray();
-            console.log(`get users: `, result);
+            // console.log(`get users: `, result);
 
             res.send(result);
-        })
+        });
+
+        app.get(`/users/admin/:email`, verifyJwtToken, async (req, res) => {
+            const reqEmail = req.params.email;
+            console.log(`admin request: `, reqEmail);
+
+            const query = { email: reqEmail };
+
+            const user = await userCollection.findOne(query);
+
+            let admin = false;
+            console.log(user);
+            if (user) {
+                admin = user?.role === "admin";
+            }
+            res.send({ admin });
+        });
 
         app.post(`/user`, async (req, res) => {
             const user = req.body;

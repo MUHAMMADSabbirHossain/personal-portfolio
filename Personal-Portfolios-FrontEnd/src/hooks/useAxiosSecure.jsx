@@ -15,7 +15,7 @@ const useAxiosSecure = () => {
 
     // request interceptor to add authorization header for every secure api
     instance.interceptors.request.use(async (config) => {
-        console.log(`request stoped by interceptor: `, config);
+        // console.log(`request stoped by interceptor: `, config);
 
         const jwtToken = localStorage.getItem(`access-token`)
 
@@ -40,11 +40,10 @@ const useAxiosSecure = () => {
             await logout();
 
             Swal.fire({
-                position: "center",
                 icon: "error",
-                title: error.response.data.message,
-                showConfirmButton: false,
-                timer: 2500
+                title: "Oops...",
+                text: error.response.data.message,
+                // footer: '<a href="#">Why do I have this issue?</a>'
             });
 
             navigate(`/login`);
