@@ -39,7 +39,7 @@ const Resume = () => {
             // console.log(prev);
             let helper = { ...prev };
             helper[`${event.target.id}`] = event.target.value;
-            console.log(helper);
+            // console.log(helper);
             return helper;
         })
     }
