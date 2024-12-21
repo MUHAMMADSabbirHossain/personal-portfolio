@@ -39,7 +39,7 @@ async function run() {
         /* middleware */
         /* verify jwt token */
         const verifyJwtToken = async (req, res, next) => {
-            console.log(`verify jwt token: `, req.headers.authorization);
+            // console.log(`verify jwt token: `, req.headers.authorization);
 
             if (!req.headers.authorization) {
                 return res.status(401).send({ message: `forbidden access.` });
@@ -65,7 +65,7 @@ async function run() {
 
         /* verify admin */
         const verifyAdmin = async (req, res, next) => {
-            console.log(`decoded email: `, req.decoded);
+            // console.log(`decoded email: `, req.decoded);
 
             const adminEmail = req.decoded.data;
 
@@ -73,7 +73,7 @@ async function run() {
 
             const result = await userCollection.findOne(query);
             // console.log(result);
-            console.log(`user role: `, result?.role);
+            // console.log(`user role: `, result?.role);
 
             if (!(result?.role === `admin`)) {
                 req.admin = false;
@@ -88,7 +88,7 @@ async function run() {
         /* jwt */
         app.post(`/jwt`, async (req, res) => {
             const email = req.body.email;
-            console.log(`jwt email: `, email);
+            // console.log(`jwt email: `, email);
 
             const jwtToken = jwt.sign({
                 data: email
@@ -110,14 +110,14 @@ async function run() {
 
         app.get(`/users/admin/:email`, verifyJwtToken, async (req, res) => {
             const reqEmail = req.params.email;
-            console.log(`admin request: `, reqEmail);
+            // console.log(`admin request: `, reqEmail);
 
             const query = { email: reqEmail };
 
             const user = await userCollection.findOne(query);
 
             let admin = false;
-            console.log(user);
+            // console.log(user);
             if (user) {
                 admin = user?.role === "admin";
             }
@@ -126,13 +126,13 @@ async function run() {
 
         app.post(`/user`, async (req, res) => {
             const user = req.body;
-            console.log(user);
+            // console.log(user);
             const queryEmail = { email: user.email };
-            console.log(queryEmail);
+            // console.log(queryEmail);
 
 
             const verifyExistingUser = await userCollection.findOne(queryEmail);
-            console.log("verifyExistingUser: ", verifyExistingUser);
+            // console.log("verifyExistingUser: ", verifyExistingUser);
 
             if (verifyExistingUser) {
                 res.send({
@@ -141,24 +141,42 @@ async function run() {
                 });
             } else {
                 user[`role`] = "member";
-                console.log("user: ", user);
+                // console.log("user: ", user);
 
                 const result = await userCollection.insertOne(user);
-                console.log("inserted result: ", result);
+                // console.log("inserted result: ", result);
 
                 res.send(result);
             }
         });
 
-        app.delete(`/user/:id`, async (req, res) => {
+        app.delete(`/user/:id`, verifyJwtToken, verifyAdmin, async (req, res) => {
             const id = req.params.id;
-            console.log(id);
+            // console.log(id);
 
             const query = { _id: new ObjectId(id) };
-            console.log(query);
+            // console.log(query);
 
             const result = await userCollection.deleteOne(query)
-            console.log(result);
+            // console.log(result);
+
+            res.send(result);
+        });
+
+        app.patch(`/users/admin/:id`, verifyJwtToken, verifyAdmin, async (req, res) => {
+            const reqId = req.params.id;
+            // console.log(reqId);
+
+            const filter = { _id: new ObjectId(reqId) };
+
+            const updatedDoc = {
+                $set: {
+                    role: "admin",
+                }
+            }
+
+            const result = await userCollection.updateOne(filter, updatedDoc);
+            // console.log(`User role modified: `, result);
 
             res.send(result);
         });
@@ -166,19 +184,19 @@ async function run() {
         /* donation */
         app.get("/donations", async (req, res) => {
             const result = await donationCollection.find().toArray();
-            console.log(result);
+            // console.log(result);
 
             res.send(result);
         });
 
         app.get(`/donation/:id`, async (req, res) => {
             const id = req.params.id;
-            console.log("params Id: ", id);
+            // console.log("params Id: ", id);
 
             const query = { _id: new ObjectId(id) }
 
             const result = await donationCollection.findOne(query);
-            console.log(result);
+            // console.log(result);
 
             res.send(result);
         });
@@ -188,7 +206,7 @@ async function run() {
             // console.log("donationItem: ", donationItem);
 
             const result = await donationCollection.insertOne(donationItem);
-            console.log(result);
+            // console.log(result);
 
             res.send(result);
         });
@@ -196,7 +214,7 @@ async function run() {
         app.patch("/donation/:id", async (req, res) => {
             const id = req.params.id;
             const updatedDonationItem = req.body;
-            console.log(id, updatedDonationItem);
+            // console.log(id, updatedDonationItem);
 
             const filter = { _id: new ObjectId(id) };
 
@@ -205,18 +223,18 @@ async function run() {
             }
 
             const result = await donationCollection.updateOne(filter, updateDoc);
-            console.log(result);
+            // console.log(result);
 
             res.send(result)
         });
 
         app.delete("/donation/:id", async (req, res) => {
             const id = req.params.id;
-            console.log(id);
+            // console.log(id);
 
             const query = { _id: new ObjectId(id) }
             const result = await donationCollection.deleteOne(query);
-            console.log(result);
+            // console.log(result);
 
             res.send(result);
         });
@@ -224,29 +242,29 @@ async function run() {
         /* volunteering */
         app.get("/volunteerings", async (req, res) => {
             const result = await volunteeringCollection.find().toArray();
-            console.log(result);
+            // console.log(result);
 
             res.send(result);
         });
 
         app.get("/volunteering/:id", async (req, res) => {
             const id = req.params.id;
-            console.log(id);
+            // console.log(id);
 
             const query = { _id: new ObjectId(id) };
 
             const result = await volunteeringCollection.findOne(query);
-            console.log(result);
+            // console.log(result);
 
             res.send(result);
         });
 
         app.post("/volunteering", async (req, res) => {
             const volunteeringItem = req.body;
-            console.log("volunteeringItem: ", volunteeringItem);
+            // console.log("volunteeringItem: ", volunteeringItem);
 
             const result = await volunteeringCollection.insertOne(volunteeringItem);
-            console.log(result);
+            // console.log(result);
 
             res.send(result);
         });
@@ -254,7 +272,7 @@ async function run() {
         app.patch(`/volunteering/:id`, async (req, res) => {
             const id = req.params.id;
             const updatedVolunteeringItem = req.body;
-            console.log(id, updatedVolunteeringItem);
+            // console.log(id, updatedVolunteeringItem);
 
             const filter = { _id: new ObjectId(id) };
 
@@ -263,19 +281,19 @@ async function run() {
             }
 
             const result = await volunteeringCollection.updateOne(filter, updateDoc);
-            console.log(result);
+            // console.log(result);
 
             res.send(result);
         });
 
         app.delete("/volunteerings/:id", async (req, res) => {
             const id = req.params.id;
-            console.log(id);
+            // console.log(id);
 
             const query = { _id: new ObjectId(id) };
             const result = await volunteeringCollection.deleteOne(query);
 
-            console.log(result);
+            // console.log(result);
             res.send(result);
         });
 
@@ -283,16 +301,16 @@ async function run() {
 
         app.post(`/bookmark`, async (req, res) => {
             const bookmarkItem = req.body;
-            console.log(bookmarkItem);
+            // console.log(bookmarkItem);
 
             const result = await bookmarkCollection.insertOne(bookmarkItem);
-            console.log(result);
+            // console.log(result);
             res.send(result);
         });
 
         app.delete(`/bookmark/:id`, async (req, res) => {
             const id = req.params.id;
-            console.log(id);
+            // console.log(id);
             const query = { _id: new ObjectId(id) }
 
             const result = await bookmarkCollection.deleteOne(query)
@@ -301,7 +319,7 @@ async function run() {
 
         app.post(`/bookmarks`, async (req, res) => {
             const reqEmail = req.body.email;
-            console.log(reqEmail);
+            // console.log(reqEmail);
 
             const query = { email: reqEmail };
             const result = await bookmarkCollection.find(query).toArray();
@@ -317,7 +335,7 @@ async function run() {
 
             const { price } = req.body;
             const amount = parseInt(price * 100);
-            console.log("payment intent amount: ", amount);
+            // console.log("payment intent amount: ", amount);
 
             // Create a PaymentIntent with the order amount and currency
             const paymentIntent = await stripe.paymentIntents.create({
@@ -333,7 +351,7 @@ async function run() {
 
         app.post("/payments", async (req, res) => {
             const payment = req.body;
-            console.log(payment);
+            // console.log(payment);
 
             // insert payment details
             const paymentResult = await paymentCollection.insertOne(payment);
@@ -352,11 +370,11 @@ async function run() {
         /* payment history */
         app.post("/paymentHistory", async (req, res) => {
             const body = req.body;
-            console.log(body);
+            // console.log(body);
 
             const query = { email: body.email };
             const result = await paymentCollection.find(query).toArray();
-            console.log(result);
+            // console.log(result);
 
             res.send(result);
         });
@@ -374,10 +392,10 @@ run().catch(console.dir);
 
 // base url for server
 app.get("/", (req, res) => {
-    console.log(`Application: base-url get route`);
+    // console.log(`Application: base-url get route`);
     res.send(`Personal Portfolios Server application is running...`)
 })
 
 app.listen(port, (req, res) => {
-    console.log(`Personal Portfolios Server applicaiton is running on: ${port}`);
+    // console.log(`Personal Portfolios Server applicaiton is running on: ${port}`);
 });
