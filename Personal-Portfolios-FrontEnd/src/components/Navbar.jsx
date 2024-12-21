@@ -3,6 +3,7 @@ import { Link, NavLink } from "react-router-dom";
 import { AuthContext } from "../providers/AuthProvider";
 import { FaUserAlt } from "react-icons/fa";
 import useDonationBookmarked from "../hooks/useDonationBookmarked";
+import { FaBookmark } from "react-icons/fa6";
 
 const Navbar = () => {
 
@@ -35,7 +36,7 @@ const Navbar = () => {
     const handleLogout = () => {
         logout()
             .then(() => {
-                console.log("Logout successfully");
+                // console.log("Logout successfully");
             })
             .catch(error => {
                 console.error(error.message);
@@ -85,7 +86,7 @@ const Navbar = () => {
                     <div className="dropdown dropdown-end">
                         <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
                             <div className="indicator">
-                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
+                                <FaBookmark className="text-2xl" />
                                 <span className="badge badge-sm indicator-item">+{donationBookmarked.length}</span>
                             </div>
                         </div>
@@ -114,15 +115,17 @@ const Navbar = () => {
                                 </a>
                             </li>
                             <li><a>Settings</a></li>
-                            <li><a>Logout</a></li>
+                            <li>
+                                {
+                                    user
+                                        ? <button onClick={handleLogout} className="btn">Logout</button>
+                                        : <Link to="/login" className="btn">Login</Link>
+                                }
+                            </li>
                         </ul>
                     </div>
                 </div>
-                {
-                    user
-                        ? <button onClick={handleLogout} className="btn">Logout</button>
-                        : <Link to="/login" className="btn">Login</Link>
-                }
+
             </div>
         </div>
     );
