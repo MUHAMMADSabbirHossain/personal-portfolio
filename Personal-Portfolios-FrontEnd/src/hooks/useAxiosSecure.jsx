@@ -5,7 +5,8 @@ import { useContext } from 'react';
 import Swal from "sweetalert2";
 
 const instance = axios.create({
-    baseURL: `http://localhost:5000/`
+    baseURL: `https://personal-portfolios-backend.vercel.app/`,
+    baseURL: `http://localhost:5000/`,
 });
 
 const useAxiosSecure = () => {
@@ -31,7 +32,7 @@ const useAxiosSecure = () => {
     instance.interceptors.response.use(async (response) => {
         return response;
     }, async (error) => {
-        console.log(`status error in the interceptor: `, error);
+        // console.log(`status error in the interceptor: `, error);
 
         const status = error.response.status;
         // logout user for 401 nd 403 error.
