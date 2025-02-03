@@ -1,15 +1,16 @@
 import { Link, useLoaderData } from 'react-router-dom';
 import useAxiosPublic from '../../../hooks/useAxiosPublic';
 import Swal from 'sweetalert2';
+import { MdDelete } from 'react-icons/md';
 
 const ManageVolunteering = () => {
     const loadedDonations = useLoaderData();
     const volunteerings = loadedDonations;
-    console.log(volunteerings);
+    // console.log(volunteerings);
     const axiosPublic = useAxiosPublic();
 
     async function handleDeleteVolunteering(id) {
-        console.log(id);
+        // console.log(id);
 
         Swal.fire({
             title: "Are you sure?",
@@ -22,7 +23,7 @@ const ManageVolunteering = () => {
         }).then(async (result) => {
             if (result.isConfirmed) {
                 const res = await axiosPublic.delete(`/volunteerings/${id}`);
-                console.log(res.data);
+                // console.log(res.data);
 
                 if (res.data?.deletedCount === 1) {
                     Swal.fire({
@@ -99,7 +100,9 @@ const ManageVolunteering = () => {
                                     </Link>
 
                                     <button
-                                        onClick={() => handleDeleteVolunteering(volunteering._id)} className="btn btn-ghost btn-xs">Delete</button>
+                                        onClick={() => handleDeleteVolunteering(volunteering._id)} className="btn btn-ghost btn-xs">
+                                        <MdDelete className='text-2xl text-red-600' />
+                                    </button>
                                 </th>
                             </tr>)
                         }

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';;
 import Swal from 'sweetalert2';
 import useDonationBookmarked from '../../../hooks/useDonationBookmarked';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
+import { MdDelete } from 'react-icons/md';
 
 const Bookmarked = () => {
 
@@ -10,7 +11,7 @@ const Bookmarked = () => {
     const axiosSecure = useAxiosSecure();
 
     const handleDeletebookmark = async (bookmark) => {
-        console.log(bookmark);
+        // console.log(bookmark);
 
         Swal.fire({
             title: "Are you sure?",
@@ -24,10 +25,10 @@ const Bookmarked = () => {
             if (result.isConfirmed) {
 
                 const res = await axiosSecure.delete(`/bookmark/${bookmark._id}`);
-                console.log(res.data);
+                // console.log(res.data);
 
                 if (res.data.deletedCount === 1) {
-                    console.log(res.data.deletedCount);
+                    // console.log(res.data.deletedCount);
                     Swal.fire({
                         title: "Deleted!",
                         text: "Your file has been deleted.",
@@ -53,14 +54,14 @@ const Bookmarked = () => {
             <h2 className='text-center'>Bookmarked...</h2>
 
             <div className="flex justify-evenly mb-8">
-                <h2 className="text-4xl">Bookmarkeds: ({bookmarks.length})</h2>
+                <h2 className="text-2xl font-bold sm:text-4xl">Bookmarkeds: ({bookmarks.length})</h2>
 
-                <h2 className="text-4xl">Total Amount: ${totalAmount}</h2>
+                <h2 className="text-2xl sm:text-4xl">Total Amount: ${totalAmount}</h2>
 
                 {
                     bookmarks.length ?
                         <Link to="/dashboard/payment">
-                            <button className="btn btn-primary">Pay Now</button>
+                            <button className="btn btn-primary px-5">Pay Now</button>
                         </Link> :
                         <button disabled className="btn btn-primary">Pay Now</button>
                 }
@@ -111,7 +112,9 @@ const Bookmarked = () => {
                                         <FaTrashAlt className="text-red-600"></FaTrashAlt>
                                     </button> */}
                                     <button
-                                        onClick={() => handleDeletebookmark(bookmark)} className="btn btn-ghost btn-xs">Delete</button>
+                                        onClick={() => handleDeletebookmark(bookmark)} className="btn btn-ghost btn-xs">
+                                        <MdDelete className='text-2xl text-red-600' />
+                                    </button>
                                 </th>
                             </tr>
                             )

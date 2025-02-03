@@ -1,16 +1,17 @@
 import { Link, useLoaderData } from 'react-router-dom';
 import useAxiosPublic from '../../../hooks/useAxiosPublic';
 import Swal from 'sweetalert2';
+import { MdDelete } from 'react-icons/md';
 
 const ManageDonation = () => {
 
     const loadedDonations = useLoaderData();
     const donations = loadedDonations;
-    console.log(donations);
+    // console.log(donations);
     const axiosPublic = useAxiosPublic();
 
     function handleDeleteDonation(id) {
-        console.log(id);
+        // console.log(id);
         // const res = await axiosPublic.delete(`donation/${id}`);
         // console.log(res.data);
 
@@ -25,7 +26,7 @@ const ManageDonation = () => {
         }).then(async (result) => {
             if (result.isConfirmed) {
                 const res = await axiosPublic.delete(`donation/${id}`);
-                console.log(res.data);
+                // console.log(res.data);
 
                 if (res.data?.deletedCount === 1) {
                     Swal.fire({
@@ -98,7 +99,9 @@ const ManageDonation = () => {
                                         <button className="btn btn-ghost btn-xs">Update</button>
                                     </Link>
                                     <button
-                                        onClick={() => handleDeleteDonation(donation._id)} className="btn btn-ghost btn-xs">Delete</button>
+                                        onClick={() => handleDeleteDonation(donation._id)} className="btn btn-ghost btn-xs">
+                                        <MdDelete className='text-2xl text-red-600' />
+                                    </button>
                                 </th>
                             </tr>)
                         }
