@@ -23,10 +23,8 @@ const Volunteering = () => {
                                 {
                                     (volunteering?.time && volunteering?.time) ?
                                         <div>
-                                            <time datetime="">at {volunteering?.time}</time>
-                                            <datetime> on {volunteering?.date}</datetime>
-                                        </div> :
-                                        <></>
+                                            <time dateTime="">at {volunteering?.time} on {volunteering?.date}</time>
+                                        </div> : ""
                                 }
 
                                 <p>{
