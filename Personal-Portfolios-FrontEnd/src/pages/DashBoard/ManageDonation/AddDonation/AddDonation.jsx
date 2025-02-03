@@ -12,8 +12,8 @@ const AddDonation = () => {
 
     const handleAddDonaiton = async (event) => {
         event.preventDefault();
-        console.log(event.target);
-        console.log(event.target.title.value);
+        // console.log(event.target);
+        // console.log(event.target.title.value);
 
         const form = new FormData(event.currentTarget);
         const title = form.get("title");
@@ -21,7 +21,7 @@ const AddDonation = () => {
         const amount = form.get("amount");
         const photoUrl = form.get("photoUrl");
         const details = form.get("details");
-        console.log(title, category, amount, photoUrl, details);
+        // console.log(title, category, amount, photoUrl, details);
 
         const donationItem = {
             title,
@@ -30,7 +30,7 @@ const AddDonation = () => {
             details
         };
 
-        // fetch(`http://localhost:5000/donation`, {
+        // fetch(`https://personal-portfolios-backend.vercel.app/donation`, {
         //     method: "POST",
         //     headers: {
         //         'content-type': 'application/json'
@@ -47,25 +47,25 @@ const AddDonation = () => {
         //     })
         //     .then(data => {
         //         // Handle the JSON data
-        //         console.log(data);
+        //         // console.log(data);
         //     })
         //     .catch(error => {
-        //         console.error(error);
+        //        // console.error(error);
         //     })
 
         const photoUploadRes = await imageUpload(photoUrl);
-        console.log(photoUploadRes);
+        // console.log(photoUploadRes);
 
         if (photoUploadRes?.status === 200) {
             // after getting success response from image upload send the data to DB.
             donationItem.photoUrl = photoUploadRes.data?.display_url;
-            console.log("donation Item: ", donationItem);
+            // console.log("donation Item: ", donationItem);
 
             const res = await axiosPublic.post("/donation", donationItem);
-            console.log(res.data);
+            // console.log(res.data);
 
             if (res.data?.insertedId) {
-                console.log(res.data.insertedId);
+                // console.log(res.data.insertedId);
                 const Toast = Swal.mixin({
                     toast: true,
                     position: "top",

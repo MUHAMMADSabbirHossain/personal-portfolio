@@ -33,11 +33,11 @@ const CheckoutForm = () => {
                     const res = await axiosPublic.post("/create-payment-intent", {
                         price: totalAmount
                     })
-                    console.log(res.data.clientSecret);
+                    // console.log(res.data.clientSecret);
                     setClientSecret(res.data.clientSecret);
                 })()
             } else {
-                console.log("For stripe, totalAmount must be greater then 0: ", totalAmount);
+                // console.log("For stripe, totalAmount must be greater then 0: ", totalAmount);
 
             }
         })()
@@ -47,17 +47,17 @@ const CheckoutForm = () => {
         //     email: user.email
         // })
         //     .then(res => {
-        //         console.log(res.data);
+        //         // console.log(res.data);
         //         setBookmarks(res.data);
 
         //         const totalAmount = res.data.reduce((total, bookmark) => total + parseFloat(bookmark.amount), 0);
-        //         console.log("Total Amount: ", totalAmount);
+        //         // console.log("Total Amount: ", totalAmount);
 
         //         axiosPublic.post("/create-payment-intent", {
         //             price: totalAmount
         //         })
         //             .then(res => {
-        //                 console.log(res.data.clientSecret);
+        //                 // console.log(res.data.clientSecret);
         //                 setClientSecret(res.data.clientSecret);
         //             })
 
@@ -65,7 +65,7 @@ const CheckoutForm = () => {
 
     }, [])
 
-    console.log("bookmarks", bookmarks);
+    // console.log("bookmarks", bookmarks);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -92,11 +92,11 @@ const CheckoutForm = () => {
         });
 
         if (error) {
-            console.log("[error]", error);
+            // console.log("[error]", error);
             setError(error.message);
 
         } else {
-            console.log("[PaymentMethod]", paymentMethod);
+            // console.log("[PaymentMethod]", paymentMethod);
             setError("");
         }
 
@@ -123,15 +123,15 @@ const CheckoutForm = () => {
         })
 
         if (confirmError) {
-            console.log("confirm error: ", confirmError);
+            // console.log("confirm error: ", confirmError);
 
         } else {
-            console.log("payment intent: ", paymentIntent);
+            // console.log("payment intent: ", paymentIntent);
             if (paymentIntent.status === "succeeded") {
-                console.log("transaction id: ", paymentIntent.id);
+                // console.log("transaction id: ", paymentIntent.id);
                 setTransactionId(paymentIntent.id);
 
-                console.log("bookmarks before object: ", bookmarks, bookmarks.reduce((total, bookmark) => total + parseFloat(bookmark.amount), 0), user.email);
+                // console.log("bookmarks before object: ", bookmarks, bookmarks.reduce((total, bookmark) => total + parseFloat(bookmark.amount), 0), user.email);
 
                 // save the payment in th DB
                 const payment = {
@@ -143,11 +143,11 @@ const CheckoutForm = () => {
                     status: "pending",
                 }
 
-                console.log('payment object: ', payment);
+                // console.log('payment object: ', payment);
 
 
                 const res = await axiosPublic.post("/payments", payment);
-                console.log("payment saved: ", res.data);
+                // console.log("payment saved: ", res.data);
                 if (res.data?.paymentResult?.insertedId) {
                     Swal.fire({
                         position: "center",

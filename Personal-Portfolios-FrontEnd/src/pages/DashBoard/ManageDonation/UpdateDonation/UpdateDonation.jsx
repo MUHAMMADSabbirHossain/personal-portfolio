@@ -6,7 +6,7 @@ import Swal from 'sweetalert2';
 const UpdateDonation = () => {
 
     const param = useParams();
-    console.log(param.id);
+    // console.log(param.id);
     const axiosPublic = useAxiosPublic();
     const [selectedDonation, setSelectedDonation] = useState({});
     const navigate = useNavigate();
@@ -14,7 +14,7 @@ const UpdateDonation = () => {
     useEffect(() => {
         (async () => {
             const res = await axiosPublic.get(`/donation/${param.id}`);
-            console.log(res.data);
+            // console.log(res.data);
             setSelectedDonation(res.data);
         })();
 
@@ -29,7 +29,7 @@ const UpdateDonation = () => {
         const photoUrl = event.target.photoUrl.value;
         const details = event.target.details.value;
 
-        console.log({ title, category, amount, photoUrl, details });
+        // console.log({ title, category, amount, photoUrl, details });
 
         const updatedDonation = {
             title,
@@ -40,7 +40,7 @@ const UpdateDonation = () => {
         }
 
         const res = await axiosPublic.patch(`/donation/${selectedDonation._id}`, updatedDonation);
-        console.log(res.data);
+        // console.log(res.data);
 
         if (res.data.modifiedCount === 1) {
             Swal.fire({
@@ -50,7 +50,7 @@ const UpdateDonation = () => {
                 showConfirmButton: false,
                 timer: 1500
             });
-            console.log("modifiedCount: ", res.data.modifiedCount);
+            // console.log("modifiedCount: ", res.data.modifiedCount);
 
             navigate("/dashboard/manageDonation");
         } else {
@@ -61,7 +61,7 @@ const UpdateDonation = () => {
                 showConfirmButton: false,
                 timer: 1500
             });
-            console.log("modifiedCount: ", res.data.modifiedCount);
+            // console.log("modifiedCount: ", res.data.modifiedCount);
 
         }
     };

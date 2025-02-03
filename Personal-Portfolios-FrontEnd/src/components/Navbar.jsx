@@ -39,7 +39,7 @@ const Navbar = () => {
                 // console.log("Logout successfully");
             })
             .catch(error => {
-                console.error(error.message);
+                // console.error(error.message);
             })
     }
 

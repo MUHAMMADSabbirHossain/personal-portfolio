@@ -14,21 +14,21 @@ const SocialLogin = () => {
 
     // google login in
     const handleGoogleLogin = () => {
-        console.log("GoogleLogin is clicked.");
+        // console.log("GoogleLogin is clicked.");
 
         googleLogin()
             .then(async (result) => {
-                console.log(result.user);
+                // console.log(result.user);
 
                 const user = {
                     email: result.user.email,
                     name: result.user.displayName,
                     role: "member"
                 }
-                console.log(user);
+                // console.log(user);
 
                 const res = await axiosPublic.post(`/user`, user);
-                console.log(res.data);
+                // console.log(res.data);
 
                 if (res.data?.insertedId
                 ) {
@@ -49,14 +49,14 @@ const SocialLogin = () => {
                     });
                 }
 
-                console.log(location.state);
+                // console.log(location.state);
                 navigate(location?.state ?
                     location.state :
                     "/"
                 );
             })
             .catch((error) => {
-                console.error(error.message);
+                // console.error(error.message);
 
                 Swal.fire({
                     position: "center",

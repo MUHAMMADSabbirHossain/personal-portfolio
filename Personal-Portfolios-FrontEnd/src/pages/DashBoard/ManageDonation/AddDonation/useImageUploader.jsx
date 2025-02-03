@@ -8,14 +8,14 @@ const useImageUploader = () => {
     const imageUpload = async (imageInputFile) => {
         const imageFile = new FormData();
         imageFile.append(`image`, imageInputFile);
-        console.log({ imageInputFile, imageFile });
+        // console.log({ imageInputFile, imageFile });
 
         const res = await axiosPublic.post(image_hosting_api, imageFile, {
             headers: {
                 "Content-Type": "application/octet-stream"
             }
         });
-        console.log(res.data.data);
+        // console.log(res.data.data);
         return res.data;
 
     };

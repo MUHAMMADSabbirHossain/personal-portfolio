@@ -6,7 +6,7 @@ import AdminRoute from '../../../routes/AdminRoute';
 const DashboardNavbar = () => {
 
     const { isAdmin } = useAdmin();
-    console.log(isAdmin);
+    // console.log(isAdmin);
 
     const dashboardNavbarList = <>
         {/* <li><a>Item 1</a></li>

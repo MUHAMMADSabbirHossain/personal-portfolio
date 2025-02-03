@@ -13,7 +13,7 @@ const Register = () => {
 
     const { createEmailUser, updateUserProfile } = useContext(AuthContext);
 
-    console.log(location);
+    // console.log(location);
 
     const handleRegister = (event) => {
         event.preventDefault();
@@ -29,7 +29,7 @@ const Register = () => {
         // create user
         createEmailUser(email, password)
             .then(result => {
-                console.log("user created: ", result.user);
+                // console.log("user created: ", result.user);
 
                 updateUserProfile(name)
                     .then(async data => {
@@ -40,10 +40,10 @@ const Register = () => {
                             name: result.user.displayName,
                             // role: `member`
                         }
-                        console.log(user);
+                        // console.log(user);
 
                         const updateProfileRes = await axiosPublic.post(`/user`, user);
-                        console.log("user profile update in DB: ", updateProfileRes);
+                        // console.log("user profile update in DB: ", updateProfileRes);
 
                         if (updateProfileRes.data?.insertedId) {
                             Swal.fire({
@@ -69,8 +69,8 @@ const Register = () => {
 
                         /* axiosPublic.post(`/user`, user)
                         .then(updateProfileRes=> {
-                            console.log("user profile update in DB: ", updateProfileRes);
-
+                            // console.log("user profile update in DB: ", updateProfileRes);
+                
                             if (updateProfileRes.data?.insertedId) {
                                 Swal.fire({
                                     position: "center",
@@ -79,8 +79,8 @@ const Register = () => {
                                     showConfirmButton: false,
                                     timer: 5500
                                 });
-                                console.log("1");
-    
+                                // console.log("1");
+                 
                                 navigate(location?.state ?
                                     location.state :
                                     "/");
@@ -92,13 +92,13 @@ const Register = () => {
                                     showConfirmButton: false,
                                     timer: 5500
                                 });
-                                console.log("1");
-    
+                                // console.log("1");
+                 
                             }
                         }) */
 
                     }).catch((error) => {
-                        console.error(error.message);
+                        // console.error(error.message);
 
                         Swal.fire({
                             position: "center",
@@ -110,7 +110,7 @@ const Register = () => {
                     })
 
             }).catch(error => {
-                console.error(error.message);
+                // console.error(error.message);
 
                 Swal.fire({
                     position: "center",

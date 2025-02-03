@@ -23,13 +23,13 @@ const Login = () => {
         // signin with email and password
         emailLogin(email, password)
             .then(result => {
-                console.log(result.user);
+                // console.log(result.user);
                 navigate(location?.state ?
                     location.state :
                     "/");
             })
             .catch(error => {
-                console.error(error.message);
+                // console.error(error.message);
             })
     }
 

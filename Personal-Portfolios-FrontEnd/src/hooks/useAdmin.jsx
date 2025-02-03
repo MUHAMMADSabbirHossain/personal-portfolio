@@ -7,15 +7,15 @@ const useAdmin = () => {
 
     const axiosSecure = useAxiosSecure();
     const { user } = useContext(AuthContext);
-    console.log(`from useAdmin: `, user.email);
+    // console.log(`from useAdmin: `, user.email);
 
 
     const { data: isAdmin = false, isPending } = useQuery({
         queryKey: [user?.email, `isAdmin`],
         queryFn: async () => {
-            console.log("asking or checking is admin: ", user)
+            // console.log("asking or checking is admin: ", user)
             const res = await axiosSecure.get(`/users/admin/${user.email}`);
-            console.log(`useAdmin data res: `, res.data);
+            // console.log(`useAdmin data res: `, res.data);
 
             return res.data;
         }

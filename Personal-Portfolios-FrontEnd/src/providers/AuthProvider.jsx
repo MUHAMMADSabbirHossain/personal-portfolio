@@ -49,21 +49,21 @@ const AuthProvider = ({ children }) => {
     useEffect(() => {
         const unSubscribe = onAuthStateChanged(auth, currentUser => {
             setUser(currentUser);
-            console.log(`current user: `, currentUser);
+            // console.log(`current user: `, currentUser);
 
             /* jwt for active user */
             if (currentUser) {
                 const userEmail = { email: currentUser.email };
                 (async () => {
                     const res = await axiosPublic.post(`/jwt`, userEmail)
-                    console.log(`jwt token: `, res.data);
+                    // console.log(`jwt token: `, res.data);
 
                     localStorage.setItem(`access-token`, res.data);
                 })();
 
                 setLoading(false);
             } else {
-                console.log(`There are no current user.`);
+                // console.log(`There are no current user.`);
 
                 localStorage.removeItem(`access-token`);
 

@@ -14,7 +14,7 @@ const useDonationBookmarked = () => {
             const res = await axiosSecure.post(`/bookmarks`, {
                 email: user.email
             });
-            console.log(res.data);
+            // console.log(res.data);
 
             return res.data;
         }
